@@ -681,7 +681,7 @@ public class GamePanel extends JPanel {
 						+ game.getWorld().getCar3().getY1() + J));
 
 		graphics2d3.drawImage(ImageProvider.getCar3(), (int) game.getWorld().getCar3().getX1() + I,
-				(int) game.getWorld().getCar2().getY1() + J, null);
+				(int) game.getWorld().getCar3().getY1() + J, null);
 
 		Graphics2D graphics2d4 = (Graphics2D) g.create();
 

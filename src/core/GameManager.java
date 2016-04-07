@@ -20,7 +20,7 @@ public class GameManager {
 		carManagerHuman = new CarManagerHuman(world, world.getCar());
 		this.carManagerList = new ArrayList<>();
 		carManagerList.add(carManagerHuman);
-		switch (world.carToBeCreated) {
+		switch (World.carToBeCreated) {
 		case 2:
 			carManagerList.add(new CarManagerAi(world, world.getCar2(), this));
 			break;

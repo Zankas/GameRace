@@ -122,10 +122,10 @@ public class World {
 
 					setBlock(Block.ROAD_HORIZZONTAL_START, i, j);
 
-					int x = j * AbstractBlockRoadObject.getSize() + AbstractBlockRoadObject.getSize() / 2
+					final int x = j * AbstractBlockRoadObject.getSize() + AbstractBlockRoadObject.getSize() / 2
 							- (int) (car.getX1() - car.getX3()) / 2;
 
-					int y = i * AbstractBlockRoadObject.getSize() + AbstractBlockRoadObject.getSize() / 2
+					final int y = i * AbstractBlockRoadObject.getSize() + AbstractBlockRoadObject.getSize() / 2
 							- (int) (car.getY1() / 6) - (int) car.getY1() / 6;
 
 					switch (carToBeCreated) {
@@ -133,8 +133,8 @@ public class World {
 						car.setX(x);
 						car.setY(y);
 
-						car2.setX(x + 20);
-						car2.setY(y + 50);
+						car2.setX(x + Car.getWidth() - (int) (Car.getWidth() * 0.5));
+						car2.setY(y + Car.getLenght() + (int) (Car.getLenght() * 0.5));
 
 						car.setAngle(Math.PI);
 						car2.setAngle(Math.PI);
@@ -143,10 +143,10 @@ public class World {
 						car.setX(x);
 						car.setY(y);
 
-						car2.setX(x + 20);
-						car2.setY(y + 50);
+						car2.setX(x + Car.getWidth() - (int) (Car.getWidth() * 0.5));
+						car2.setY(y + Car.getLenght() + (int) (Car.getLenght() * 0.5));
 
-						car3.setX(x + 50);
+						car3.setX(x + Car.getWidth() + (int) (Car.getWidth() * 0.5));
 						car3.setY(y);
 
 						car.setAngle(Math.PI);
@@ -157,15 +157,14 @@ public class World {
 						car.setX(x);
 						car.setY(y);
 
-						car2.setX(x + 20);
-						car2.setY(y + 50);
+						car2.setX(x + Car.getWidth() - (int) (Car.getWidth() * 0.5));
+						car2.setY(y + Car.getLenght() + (int) (Car.getLenght() * 0.5));
 
-						car3.setX(x + 50);
+						car3.setX(x + Car.getWidth() + (int) (Car.getWidth() * 0.5));
 						car3.setY(y);
-						System.out.println();
 
-						car4.setX(x + 50);
-						car4.setY(y + 50);
+						car4.setX(x + Car.getWidth() * 2);
+						car4.setY(y + Car.getLenght() + (int) (Car.getLenght() * 0.5));
 
 						car.setAngle(Math.PI);
 						car2.setAngle(Math.PI);
@@ -179,16 +178,60 @@ public class World {
 
 					setBlock(Block.ROAD_HORIZZONTAL_START, i, j);
 
-					car.setX(j * AbstractBlockRoadObject.getSize() + AbstractBlockRoadObject.getSize() / 2
-							- (int) (car.getX3() - car.getX1()) - 12);
-					car.setY(i * AbstractBlockRoadObject.getSize() + AbstractBlockRoadObject.getSize() / 2
-							- (int) (car.getY2() - car.getY1()) / 2);
+					final int x = j * AbstractBlockRoadObject.getSize() + AbstractBlockRoadObject.getSize() / 2
+							- (int) (car.getX3() - car.getX1()) - 12;
 
-					car2.setX(j * AbstractBlockRoadObject.getSize() + AbstractBlockRoadObject.getSize() / 2
-							- (int) (car2.getX3() - car2.getX1()) - 12);
-					car2.setY(i * AbstractBlockRoadObject.getSize() + AbstractBlockRoadObject.getSize() / 2
-							- (int) (car2.getY2() - car2.getY1()) / 2);
-					car2.setAngle(0);
+					final int y = (i * AbstractBlockRoadObject.getSize()) + (AbstractBlockRoadObject.getSize() / 2)
+							- (int) ((car.getY2() - car.getY1()) * 1.25);
+					// final int y = (i * AbstractBlockRoadObject.getSize()) +
+					// (AbstractBlockRoadObject.getSize() / 2)
+					// - (int) ((car.getY2() - car.getY1()) / 2);
+
+					switch (carToBeCreated) {
+					case 2:
+						car.setX(x);
+						car.setY(y);
+
+						car2.setX(x - Car.getWidth() + (int) (Car.getWidth() * 0.5));
+						car2.setY(y + Car.getLenght() + (int) (Car.getLenght() * 0.5));
+
+						car.setAngle(0);
+						car2.setAngle(0);
+						car3.setAngle(0);
+						break;
+					case 3:
+						car.setX(x);
+						car.setY(y);
+
+						car2.setX(x - Car.getWidth() + (int) (Car.getWidth() * 0.5));
+						car2.setY(y + Car.getLenght() + (int) (Car.getLenght() * 0.5));
+
+						car3.setX(x - Car.getWidth() - (int) (Car.getWidth() * 0.5));
+						car3.setY(y);
+
+						car.setAngle(0);
+						car2.setAngle(0);
+						car3.setAngle(0);
+						break;
+					case 4:
+						car.setX(x);
+						car.setY(y);
+
+						car2.setX(x - Car.getWidth() + (int) (Car.getWidth() * 0.5));
+						car2.setY(y + Car.getLenght() + (int) (Car.getLenght() * 0.5));
+
+						car3.setX(x - Car.getWidth() - (int) (Car.getWidth() * 0.5));
+						car3.setY(y);
+
+						car4.setX(x - Car.getWidth() * 2);
+						car4.setY(y + Car.getLenght() + (int) (Car.getLenght() * 0.5));
+
+						car.setAngle(0);
+						car2.setAngle(0);
+						car3.setAngle(0);
+						car4.setAngle(0);
+						break;
+					}
 				}
 				if ("startverticalup".equals(matrixString[i][j])) {
 

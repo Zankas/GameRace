@@ -3,6 +3,10 @@ package core;
 public class Car {
 
 	private int ID;
+
+	private static final int WIDTH = 60;
+	private static final int LENGHT = 30;
+
 	private double x1;
 	private double y1;
 	private double x2;
@@ -192,16 +196,24 @@ public class Car {
 		return y4rot;
 	}
 
+	public static int getWidth() {
+		return WIDTH;
+	}
+
+	public static int getLenght() {
+		return LENGHT;
+	}
+
 	public void setX(int x) {
 		x1 = x;
 		x2 = x1;
-		x3 = x + 60;
+		x3 = x + WIDTH;
 		x4 = x3;
 	}
 
 	public void setY(int y) {
 		y1 = y;
-		y2 = 30 + y;
+		y2 = y + LENGHT;
 		y3 = y1;
 		y4 = y2;
 	}

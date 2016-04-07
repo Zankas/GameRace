@@ -391,12 +391,16 @@ public class ImageProvider {
 
 			car = ImageIO.read(Thread.currentThread().getContextClassLoader().getResource("images/car.gif"))
 					.getScaledInstance(60, 30, java.awt.Image.SCALE_SMOOTH);
+			
 			car2 = ImageIO.read(Thread.currentThread().getContextClassLoader().getResource("images/car2.gif"))
 					.getScaledInstance(60, 30, java.awt.Image.SCALE_SMOOTH);
+			
 			car3 = ImageIO.read(Thread.currentThread().getContextClassLoader().getResource("images/car3.gif"))
 					.getScaledInstance(60, 30, java.awt.Image.SCALE_SMOOTH);
+			
 			car4 = ImageIO.read(Thread.currentThread().getContextClassLoader().getResource("images/car4.gif"))
 					.getScaledInstance(60, 30, java.awt.Image.SCALE_SMOOTH);
+			
 			clear = ImageIO.read(Thread.currentThread().getContextClassLoader().getResource("images/clear.png"))
 					.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
 
@@ -540,10 +544,6 @@ public class ImageProvider {
 
 			e.printStackTrace();
 		}
-	}
-
-	public static Image getCar2() {
-		return car2;
 	}
 
 	public static Image getClear() {
@@ -756,6 +756,10 @@ public class ImageProvider {
 
 	public static Image getCar() {
 		return car;
+	}
+
+	public static Image getCar2() {
+		return car2;
 	}
 
 	public static Image getCar3() {
