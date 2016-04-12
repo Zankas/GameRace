@@ -1,7 +1,6 @@
 package core;
 
 public class CarManagerAi extends AbstractCarManager {
-	
 
 	BlockRoadObject lastPiece;
 	GameManager game;
@@ -10,8 +9,8 @@ public class CarManagerAi extends AbstractCarManager {
 	boolean beta;
 	final double AXEL = 2.0, BRAKE = 1.3;
 
-	public CarManagerAi(World w, Car car,GameManager game) {
-		super(w,car);
+	public CarManagerAi(World w, Car car, GameManager game) {
+		super(w, car);
 		this.game = game;
 		this.lastPiece = world.getMatrixWorld().whereAmI(car);
 	}
@@ -40,9 +39,9 @@ public class CarManagerAi extends AbstractCarManager {
 		} else if (car.getSpeed() >= AXEL) {
 			brake();
 		}
-		
+
 		if (world.getMatrixWorld().whereAmI(car) instanceof BlockRoadCurveLeftDown) {
-//			System.out.println("LD");
+			// System.out.println("LD");
 			if (direction == Direction.RIGHT) {
 				steerRight();
 				direction = Direction.DOWN;
@@ -62,7 +61,7 @@ public class CarManagerAi extends AbstractCarManager {
 			lastPiece = world.getMatrixWorld().whereAmI(car);
 
 		} else if (world.getMatrixWorld().whereAmI(car) instanceof BlockRoadCurveLeftUp) {
-//			System.out.println("LU");
+			// System.out.println("LU");
 			if (direction == Direction.DOWN) {
 				steerRight();
 				direction = Direction.LEFT;
@@ -82,7 +81,7 @@ public class CarManagerAi extends AbstractCarManager {
 			lastPiece = world.getMatrixWorld().whereAmI(car);
 
 		} else if (world.getMatrixWorld().whereAmI(car) instanceof BlockRoadCurveRightUp) {
-//			System.out.println("RU");
+			// System.out.println("RU");
 			if (direction == Direction.LEFT) {
 				steerRight();
 				direction = Direction.UP;
@@ -99,7 +98,7 @@ public class CarManagerAi extends AbstractCarManager {
 			lastPiece = world.getMatrixWorld().whereAmI(car);
 
 		} else if (world.getMatrixWorld().whereAmI(car) instanceof BlockRoadCurveRightDown) {
-//			System.out.println("RD");
+			// System.out.println("RD");
 			// System.out.println(car.getSpeed());
 			if (direction == Direction.UP) {
 				steerRight();
@@ -120,7 +119,7 @@ public class CarManagerAi extends AbstractCarManager {
 			lastPiece = world.getMatrixWorld().whereAmI(car);
 
 		} else if (world.getMatrixWorld().whereAmI(car) instanceof BlockRoadHorizontal) {
-//			System.out.println("H");
+			// System.out.println("H");
 			die();
 			if (direction == Direction.LEFT) {
 				ahed(direction);
@@ -131,7 +130,7 @@ public class CarManagerAi extends AbstractCarManager {
 			lastPiece = world.getMatrixWorld().whereAmI(car);
 
 		} else if (world.getMatrixWorld().whereAmI(car) instanceof BlockRoadVertical) {
-//			System.out.println("V");
+			// System.out.println("V");
 			die();
 			if (direction == Direction.UP) {
 				ahed(direction);
@@ -170,7 +169,7 @@ public class CarManagerAi extends AbstractCarManager {
 		accel();
 		// checkBOOL();
 		if (direction == Direction.RIGHT) {
-//			System.out.println("R1\t" + car.getAngle());
+			// System.out.println("R1\t" + car.getAngle());
 			if (car.getAngle() > (0.0) && car.getAngle() < (Math.PI / 2)) {
 				car.setAngle(car.getAngle() - 0.011);
 				// System.out.println("r2\t" + car.getAngle());
@@ -215,13 +214,13 @@ public class CarManagerAi extends AbstractCarManager {
 
 	}
 
-	//XXX
-//	private void checkBOOL() {
-//		System.out.println("DO\t" + car.isDOWN());
-//		System.out.println("LE\t" + car.isLEFT());
-//		System.out.println("RI\t" + car.isRIGHT());
-//		System.out.println("UP\t" + car.isUP());
-//	}
+	// XXX
+	// private void checkBOOL() {
+	// System.out.println("DO\t" + car.isDOWN());
+	// System.out.println("LE\t" + car.isLEFT());
+	// System.out.println("RI\t" + car.isRIGHT());
+	// System.out.println("UP\t" + car.isUP());
+	// }
 
 	private void steerLeft() {
 		car.setLEFT(true);
@@ -249,10 +248,10 @@ public class CarManagerAi extends AbstractCarManager {
 
 	@Override
 	void totalMove() {
-		
-		if(checkpoints.getActualLaps()!=checkpoints.getTotalLaps()){
-		autoMove();
-		car.move(world);
+
+		if (checkpoints.getActualLaps() != checkpoints.getTotalLaps()) {
+			autoMove();
+			car.move(world);
 		}
 	}
 }

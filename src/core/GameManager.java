@@ -36,7 +36,7 @@ public class GameManager {
 			break;
 		}
 
-//		carManagerList.add(new CarManagerAi(world, world.getCar2(), this));
+		// carManagerList.add(new CarManagerAi(world, world.getCar2(), this));
 
 		update();
 		threadSpeedCar();
@@ -94,7 +94,7 @@ public class GameManager {
 					}
 					if (update) {
 						for (CarManager cm : carManagerList) {
-							cm.updateCar();
+							cm.updateCar(carManagerList);
 						}
 					}
 				}

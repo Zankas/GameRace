@@ -1,21 +1,26 @@
 package core;
 
+import java.util.ArrayList;
+
 public interface CarManager {
 	void collisionGrass();
 
 	void collisionCheckPoint();
 
 	boolean checking_off_the_track();
-	
+
 	void collisionStart();
 
-	void updateCar();
+	void updateCar(ArrayList<CarManager> carManagerList);
 
 	Car getCar();
-	
-	public void makeCheckPoint();
-	
+
+	void makeCheckPoint();
+
 	void speedHandler();
+
+	Checkpoints getCheckpoints();
 	
-	public Checkpoints getCheckpoints();
+	void intersect(ArrayList<CarManager> carManagerList);
+
 }

@@ -1,5 +1,7 @@
 package core;
 
+import java.util.ArrayList;
+
 public abstract class AbstractCarManager implements CarManager {
 	Car car;
 	World world;
@@ -8,25 +10,24 @@ public abstract class AbstractCarManager implements CarManager {
 	public AbstractCarManager(World w, Car car) {
 		this.world = w;
 		this.car = car;
-		
+
 		this.checkpoints = new Checkpoints();
-		
 
 		checkpoints.setTotalLaps(3);// default laps track
 	}
-	public void makeCheckPoint(){
-		
+
+	public void makeCheckPoint() {
 
 		for (int i = 0; i < World.X_MATRIX_STRING; i++) {
 			for (int j = 0; j < World.Y_MATRIX_STRING; j++) {
-				
-				if("horizontal".equals(world.getMatrixString()[i][j]) ||
-						"vertical".equals(world.getMatrixString()[i][j]) ||
-						"curveleftdown".equals(world.getMatrixString()[i][j]) ||
-						"curveleftup".equals(world.getMatrixString()[i][j]) ||
-						"curverightup".equals(world.getMatrixString()[i][j]) ||
-						"curverightdown".equals(world.getMatrixString()[i][j])){
-					
+
+				if ("horizontal".equals(world.getMatrixString()[i][j])
+						|| "vertical".equals(world.getMatrixString()[i][j])
+						|| "curveleftdown".equals(world.getMatrixString()[i][j])
+						|| "curveleftup".equals(world.getMatrixString()[i][j])
+						|| "curverightup".equals(world.getMatrixString()[i][j])
+						|| "curverightdown".equals(world.getMatrixString()[i][j])) {
+
 					checkpoints.insertCheckPoint(i, j);
 				}
 
@@ -37,11 +38,12 @@ public abstract class AbstractCarManager implements CarManager {
 	public Checkpoints getCheckpoints() {
 		return checkpoints;
 	}
-	
-	public void updateCar() {
+
+	public void updateCar(ArrayList<CarManager> carManagerList) {
 		moving(true);
 		check();
 		moving(false);
+		intersect(carManagerList);
 	}
 
 	private void moving(boolean condition) {
@@ -94,21 +96,14 @@ public abstract class AbstractCarManager implements CarManager {
 		double cos = Math.cos(car.getAngle());
 		double sin = Math.sin(car.getAngle());
 
-		if ((world.getMatrixWorld().getValuePosition(
-				(int) (car.getY1rot() + (sin * car.getSpeed())),
+		if ((world.getMatrixWorld().getValuePosition((int) (car.getY1rot() + (sin * car.getSpeed())),
 				(int) (car.getX1rot() + (cos * car.getSpeed()))) == BlockRoadObject.GRASS)
-				|| (world.getMatrixWorld()
-						.getValuePosition((int) (car.getY2rot() + (sin * car.getSpeed())),
-								(int) (car.getX2rot()
-										+ (cos * car.getSpeed()))) == BlockRoadObject.GRASS)
-				|| (world.getMatrixWorld()
-						.getValuePosition((int) (car.getY3rot() + (sin * car.getSpeed())),
-								(int) (car.getX3rot()
-										+ (cos * car.getSpeed()))) == BlockRoadObject.GRASS)
-				|| (world.getMatrixWorld().getValuePosition(
-						(int) (car.getY4rot() + (sin * car.getSpeed())),
-						(int) (car.getX4rot()
-								+ (cos * car.getSpeed()))) == BlockRoadObject.GRASS)) {
+				|| (world.getMatrixWorld().getValuePosition((int) (car.getY2rot() + (sin * car.getSpeed())),
+						(int) (car.getX2rot() + (cos * car.getSpeed()))) == BlockRoadObject.GRASS)
+				|| (world.getMatrixWorld().getValuePosition((int) (car.getY3rot() + (sin * car.getSpeed())),
+						(int) (car.getX3rot() + (cos * car.getSpeed()))) == BlockRoadObject.GRASS)
+				|| (world.getMatrixWorld().getValuePosition((int) (car.getY4rot() + (sin * car.getSpeed())),
+						(int) (car.getX4rot() + (cos * car.getSpeed()))) == BlockRoadObject.GRASS)) {
 
 			if (car.getSpeed() > 0.75)
 				car.setSpeed(car.getSpeed() - 0.03);
@@ -126,59 +121,35 @@ public abstract class AbstractCarManager implements CarManager {
 		double cos = Math.cos(car.getAngle());
 		double sin = Math.sin(car.getAngle());
 
-		if (world.getMatrixWorld()
-				.getValuePosition((int) (car.getY1rot()
-						+ (sin * car.getSpeed())),
+		if (world.getMatrixWorld().getValuePosition((int) (car.getY1rot() + (sin * car.getSpeed())),
 				(int) (car.getX1rot() + (cos * car.getSpeed()))) == BlockRoadObject.CHECKPOINT) {
 
-			checkpoints.setCheckpoint(
-					(int) (car.getY1rot() + (sin * car.getSpeed()))
-							/ AbstractBlockRoadObject.SIZE,
-					(int) (car.getX1rot() + (cos * car.getSpeed()))
-							/ AbstractBlockRoadObject.SIZE,
-					true);
+			checkpoints.setCheckpoint((int) (car.getY1rot() + (sin * car.getSpeed())) / AbstractBlockRoadObject.SIZE,
+					(int) (car.getX1rot() + (cos * car.getSpeed())) / AbstractBlockRoadObject.SIZE, true);
 
 		}
 
-		if (world.getMatrixWorld()
-				.getValuePosition((int) (car.getY2rot()
-						+ (sin * car.getSpeed())),
+		if (world.getMatrixWorld().getValuePosition((int) (car.getY2rot() + (sin * car.getSpeed())),
 				(int) (car.getX2rot() + (cos * car.getSpeed()))) == BlockRoadObject.CHECKPOINT) {
 
-			checkpoints.setCheckpoint(
-					(int) (car.getY2rot() + (sin * car.getSpeed()))
-							/ AbstractBlockRoadObject.SIZE,
-					(int) (car.getX2rot() + (cos * car.getSpeed()))
-							/ AbstractBlockRoadObject.SIZE,
-					true);
+			checkpoints.setCheckpoint((int) (car.getY2rot() + (sin * car.getSpeed())) / AbstractBlockRoadObject.SIZE,
+					(int) (car.getX2rot() + (cos * car.getSpeed())) / AbstractBlockRoadObject.SIZE, true);
 
 		}
 
-		if (world.getMatrixWorld()
-				.getValuePosition((int) (car.getY3rot()
-						+ (sin * car.getSpeed())),
+		if (world.getMatrixWorld().getValuePosition((int) (car.getY3rot() + (sin * car.getSpeed())),
 				(int) (car.getX3rot() + (cos * car.getSpeed()))) == BlockRoadObject.CHECKPOINT) {
 
-			checkpoints.setCheckpoint(
-					(int) (car.getY3rot() + (sin * car.getSpeed()))
-							/ AbstractBlockRoadObject.SIZE,
-					(int) (car.getX3rot() + (cos * car.getSpeed()))
-							/ AbstractBlockRoadObject.SIZE,
-					true);
+			checkpoints.setCheckpoint((int) (car.getY3rot() + (sin * car.getSpeed())) / AbstractBlockRoadObject.SIZE,
+					(int) (car.getX3rot() + (cos * car.getSpeed())) / AbstractBlockRoadObject.SIZE, true);
 
 		}
 
-		if (world.getMatrixWorld()
-				.getValuePosition((int) (car.getY4rot()
-						+ (sin * car.getSpeed())),
+		if (world.getMatrixWorld().getValuePosition((int) (car.getY4rot() + (sin * car.getSpeed())),
 				(int) (car.getX4rot() + (cos * car.getSpeed()))) == BlockRoadObject.CHECKPOINT) {
 
-			checkpoints.setCheckpoint(
-					(int) (car.getY4rot() + (sin * car.getSpeed()))
-							/ AbstractBlockRoadObject.SIZE,
-					(int) (car.getX4rot() + (cos * car.getSpeed()))
-							/ AbstractBlockRoadObject.SIZE,
-					true);
+			checkpoints.setCheckpoint((int) (car.getY4rot() + (sin * car.getSpeed())) / AbstractBlockRoadObject.SIZE,
+					(int) (car.getX4rot() + (cos * car.getSpeed())) / AbstractBlockRoadObject.SIZE, true);
 
 		}
 	}
@@ -189,34 +160,31 @@ public abstract class AbstractCarManager implements CarManager {
 
 		if (((int) (car.getY1rot() + (sin * car.getSpeed())) < 0)
 				|| ((int) (car.getX1rot() + (cos * car.getSpeed())) < 0)
-				|| ((int) (car.getY1rot() + (sin * car.getSpeed())) >= (AbstractBlockRoadObject
-						.getSize() * World.X_MATRIX_STRING))
-				|| ((int) (car.getX1rot() + (cos * car.getSpeed())) >= (AbstractBlockRoadObject
-						.getSize() * World.Y_MATRIX_STRING))
+				|| ((int) (car.getY1rot() + (sin * car.getSpeed())) >= (AbstractBlockRoadObject.getSize()
+						* World.X_MATRIX_STRING))
+				|| ((int) (car.getX1rot() + (cos * car.getSpeed())) >= (AbstractBlockRoadObject.getSize()
+						* World.Y_MATRIX_STRING))
 				||
 
-		((int) (car.getY2rot() + (sin * car.getSpeed())) < 0)
-				|| ((int) (car.getX2rot() + (cos * car.getSpeed())) < 0)
-				|| ((int) (car.getY2rot() + (sin * car.getSpeed())) >= (AbstractBlockRoadObject
-						.getSize() * World.X_MATRIX_STRING))
-				|| ((int) (car.getX2rot() + (cos * car.getSpeed())) >= (AbstractBlockRoadObject
-						.getSize() * World.Y_MATRIX_STRING))
+		((int) (car.getY2rot() + (sin * car.getSpeed())) < 0) || ((int) (car.getX2rot() + (cos * car.getSpeed())) < 0)
+				|| ((int) (car.getY2rot() + (sin * car.getSpeed())) >= (AbstractBlockRoadObject.getSize()
+						* World.X_MATRIX_STRING))
+				|| ((int) (car.getX2rot() + (cos * car.getSpeed())) >= (AbstractBlockRoadObject.getSize()
+						* World.Y_MATRIX_STRING))
 				||
 
-		((int) (car.getY3rot() + (sin * car.getSpeed())) < 0)
-				|| ((int) (car.getX3rot() + (cos * car.getSpeed())) < 0)
-				|| ((int) (car.getY3rot() + (sin * car.getSpeed())) >= (AbstractBlockRoadObject
-						.getSize() * World.X_MATRIX_STRING))
-				|| ((int) (car.getX3rot() + (cos * car.getSpeed())) >= (AbstractBlockRoadObject
-						.getSize() * World.Y_MATRIX_STRING))
+		((int) (car.getY3rot() + (sin * car.getSpeed())) < 0) || ((int) (car.getX3rot() + (cos * car.getSpeed())) < 0)
+				|| ((int) (car.getY3rot() + (sin * car.getSpeed())) >= (AbstractBlockRoadObject.getSize()
+						* World.X_MATRIX_STRING))
+				|| ((int) (car.getX3rot() + (cos * car.getSpeed())) >= (AbstractBlockRoadObject.getSize()
+						* World.Y_MATRIX_STRING))
 				||
 
-		((int) (car.getY4rot() + (sin * car.getSpeed())) < 0)
-				|| ((int) (car.getX4rot() + (cos * car.getSpeed())) < 0)
-				|| ((int) (car.getY4rot() + (sin * car.getSpeed())) >= (AbstractBlockRoadObject
-						.getSize() * World.X_MATRIX_STRING))
-				|| ((int) (car.getX4rot() + (cos * car.getSpeed())) >= (AbstractBlockRoadObject
-						.getSize() * World.Y_MATRIX_STRING))) {
+		((int) (car.getY4rot() + (sin * car.getSpeed())) < 0) || ((int) (car.getX4rot() + (cos * car.getSpeed())) < 0)
+				|| ((int) (car.getY4rot() + (sin * car.getSpeed())) >= (AbstractBlockRoadObject.getSize()
+						* World.X_MATRIX_STRING))
+				|| ((int) (car.getX4rot() + (cos * car.getSpeed())) >= (AbstractBlockRoadObject.getSize()
+						* World.Y_MATRIX_STRING))) {
 
 			return true;
 		}
@@ -230,21 +198,14 @@ public abstract class AbstractCarManager implements CarManager {
 		double cos = Math.cos(car.getAngle());
 		double sin = Math.sin(car.getAngle());
 
-		if ((world.getMatrixWorld().getValuePosition(
-				(int) (car.getY1rot() + (sin * car.getSpeed())),
+		if ((world.getMatrixWorld().getValuePosition((int) (car.getY1rot() + (sin * car.getSpeed())),
 				(int) (car.getX1rot() + (cos * car.getSpeed()))) == BlockRoadObject.START)
-				|| (world.getMatrixWorld()
-						.getValuePosition((int) (car.getY2rot() + (sin * car.getSpeed())),
-								(int) (car.getX2rot()
-										+ (cos * car.getSpeed()))) == BlockRoadObject.START)
-				|| (world.getMatrixWorld()
-						.getValuePosition((int) (car.getY3rot() + (sin * car.getSpeed())),
-								(int) (car.getX3rot()
-										+ (cos * car.getSpeed()))) == BlockRoadObject.START)
-				|| (world.getMatrixWorld().getValuePosition(
-						(int) (car.getY4rot() + (sin * car.getSpeed())),
-						(int) (car.getX4rot()
-								+ (cos * car.getSpeed()))) == BlockRoadObject.START)) {
+				|| (world.getMatrixWorld().getValuePosition((int) (car.getY2rot() + (sin * car.getSpeed())),
+						(int) (car.getX2rot() + (cos * car.getSpeed()))) == BlockRoadObject.START)
+				|| (world.getMatrixWorld().getValuePosition((int) (car.getY3rot() + (sin * car.getSpeed())),
+						(int) (car.getX3rot() + (cos * car.getSpeed()))) == BlockRoadObject.START)
+				|| (world.getMatrixWorld().getValuePosition((int) (car.getY4rot() + (sin * car.getSpeed())),
+						(int) (car.getX4rot() + (cos * car.getSpeed()))) == BlockRoadObject.START)) {
 
 			if (checkpoints.allCheckpointsPassed()) {
 				checkpoints.setFalseAllCheckPoint();
@@ -261,7 +222,7 @@ public abstract class AbstractCarManager implements CarManager {
 	}
 
 	public void speedHandler() {
-		
+
 		// gestione velocita' per marcia avanti
 		if (car.isUP()) {
 			if (car.getSpeed() < 4)
@@ -290,10 +251,14 @@ public abstract class AbstractCarManager implements CarManager {
 				car.setSpeed(car.getSpeed() + 0.15);
 		}
 
-		if ((car.getSpeed() > -0.2) && (car.getSpeed() < 0.2)
-				&& (!car.isUP() && !car.isDOWN())) {
+		if ((car.getSpeed() > -0.2) && (car.getSpeed() < 0.2) && (!car.isUP() && !car.isDOWN())) {
 			car.setSpeed(0);
 		}
 	}
-	
+
+	@Override
+	public void intersect(ArrayList<CarManager> carManagerList) {
+		// TODO Auto-generated method stub
+
+	}
 }
