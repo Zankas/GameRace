@@ -7,10 +7,13 @@ public class CarManagerAi extends AbstractCarManager {
 	Direction direction;
 	boolean alpha = true;
 	boolean beta;
+	double lastX, lastY;
 	final double AXEL = 2.0, BRAKE = 1.3;
 
 	public CarManagerAi(World w, Car car, GameManager game) {
 		super(w, car);
+		this.lastX = car.getX1rot();
+		this.lastY = car.getY1rot();
 		this.game = game;
 		this.lastPiece = world.getMatrixWorld().whereAmI(car);
 	}
@@ -62,6 +65,10 @@ public class CarManagerAi extends AbstractCarManager {
 
 		} else if (world.getMatrixWorld().whereAmI(car) instanceof BlockRoadCurveLeftUp) {
 			// System.out.println("LU");
+			if (car.getX1rot() == lastX && car.getY1rot() == lastY) {
+				backward();
+			}
+
 			if (direction == Direction.DOWN) {
 				steerRight();
 				direction = Direction.LEFT;
@@ -140,12 +147,16 @@ public class CarManagerAi extends AbstractCarManager {
 
 			lastPiece = world.getMatrixWorld().whereAmI(car);
 		}
-
 	}
 
 	// END AI HANDLER
 
 	// START SUPPORT FUNCTIONS
+
+	private void backward() {
+		int speed = -2;
+		car.setSpeed(speed);
+	}
 
 	private void die() {
 		car.setLEFT(false);
