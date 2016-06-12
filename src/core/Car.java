@@ -1,11 +1,15 @@
 package core;
 
+import java.awt.Rectangle;
+
 public class Car {
 
 	private int ID;
 
 	private static final int WIDTH = 60;
 	private static final int LENGHT = 30;
+	
+	private Rectangle rect;
 
 	private double x1;
 	private double y1;
@@ -39,6 +43,7 @@ public class Car {
 		setXYrotate();
 		setAngle(0);
 		ID = 1;
+		this.setRect(new Rectangle((int)x1rot, (int)y1rot, WIDTH, LENGHT));
 	}
 
 	public Car(Car car) {
@@ -47,18 +52,19 @@ public class Car {
 		setXYrotate();
 		setAngle(0);
 		this.ID = car.ID + 1;
+		this.setRect(new Rectangle((int)x1rot, (int)y1rot, WIDTH, LENGHT));
 	}
-
-	public Car(Car car, int value) {
-		if (value == 1) {
-			setX((int) car.getX1() + (int) (car.getX1() - car.getX3() / 2));
-			setY((int) car.getY1() + (int) (car.getY2() - car.getY1() / 2));
-			setXYrotate();
-			setAngle(0);
-			this.ID = car.ID + 1;
-		}
-
-	}
+//
+//	public Car(Car car, int value) {
+//		if (value == 1) {
+//			setX((int) car.getX1() + (int) (car.getX1() - car.getX3() / 2));
+//			setY((int) car.getY1() + (int) (car.getY2() - car.getY1() / 2));
+//			setXYrotate();
+//			setAngle(0);
+//			this.ID = car.ID + 1;
+//		}
+//
+//	}
 
 	public double getSpeed() {
 		return speed;
@@ -125,9 +131,12 @@ public class Car {
 			y4rot = (((y2 - y1) / 2) + y1) + (x4 - (((x3 - x1) / 3) + x1)) * Math.sin(angle)
 					+ (y4 - (((y2 - y1) / 2) + y1)) * Math.cos(angle);
 		}
+		
+		rect.setLocation((int)x1rot, (int)y1rot);
 
 	}
-
+	
+	
 	public int getID() {
 		return ID;
 	}
@@ -368,5 +377,13 @@ public class Car {
 
 	public void setY4rot(double y4rot) {
 		this.y4rot = y4rot;
+	}
+
+	public Rectangle getRect() {
+		return rect;
+	}
+
+	public void setRect(Rectangle rect) {
+		this.rect = rect;
 	}
 }

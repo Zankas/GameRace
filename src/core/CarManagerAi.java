@@ -1,5 +1,7 @@
 package core;
 
+import java.util.ArrayList;
+
 public class CarManagerAi extends AbstractCarManager {
 
 	BlockRoadObject lastPiece;

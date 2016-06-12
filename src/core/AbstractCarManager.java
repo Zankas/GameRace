@@ -1,5 +1,7 @@
 package core;
 
+import java.awt.Polygon;
+import java.awt.geom.Area;
 import java.util.ArrayList;
 
 public abstract class AbstractCarManager implements CarManager {
@@ -39,11 +41,20 @@ public abstract class AbstractCarManager implements CarManager {
 		return checkpoints;
 	}
 
-	public void updateCar(ArrayList<CarManager> carManagerList) {
+	@Override
+	public void updateCar(ArrayList<CarManager> carManagerList, int i) {
 		moving(true);
 		check();
 		moving(false);
-		intersect(carManagerList);
+		// for (CarManager cm : carManagerList) {
+		// if (car.getID() != cm.getCar().getID())
+		for (int j = i + 1; j < carManagerList.size(); j++)
+			if (intersect(carManagerList.get(j))) {
+				// TODO PHYSICAL FUNCTION FOR COLLISION.
+				System.out.println(
+						"car: " + car.getID() + " collide with car :" + carManagerList.get(j).getCar().getID());
+			}
+		// }
 	}
 
 	private void moving(boolean condition) {
@@ -80,6 +91,32 @@ public abstract class AbstractCarManager implements CarManager {
 	}
 
 	abstract void totalMove();
+
+	@Override
+	public boolean intersect(CarManager carManager) {
+		// FIXME (add phical reaction.)
+
+		int[] xpoints = { (int) car.getX1rot(), (int) car.getX2rot(), (int) car.getX3rot(), (int) car.getX4rot() };
+		int[] ypoints = { (int) car.getY1rot(), (int) car.getY2rot(), (int) car.getY3rot(), (int) car.getY4rot() };
+		int npoints = 4;
+
+		Area areaA = new Area(new Polygon(xpoints, ypoints, npoints));
+
+		xpoints[0] = (int) carManager.getCar().getX1rot();
+		xpoints[1] = (int) carManager.getCar().getX2rot();
+		xpoints[2] = (int) carManager.getCar().getX4rot();
+		xpoints[3] = (int) carManager.getCar().getX4rot();
+
+		ypoints[0] = (int) carManager.getCar().getY1rot();
+		ypoints[1] = (int) carManager.getCar().getY2rot();
+		ypoints[2] = (int) carManager.getCar().getY4rot();
+		ypoints[3] = (int) carManager.getCar().getY4rot();
+
+		areaA.intersect(new Area(new Polygon(xpoints, ypoints, npoints)));
+
+		return !areaA.isEmpty();
+
+	}
 
 	void check() {
 		collisionGrass();
@@ -166,21 +203,24 @@ public abstract class AbstractCarManager implements CarManager {
 						* World.Y_MATRIX_STRING))
 				||
 
-		((int) (car.getY2rot() + (sin * car.getSpeed())) < 0) || ((int) (car.getX2rot() + (cos * car.getSpeed())) < 0)
+				((int) (car.getY2rot() + (sin * car.getSpeed())) < 0)
+				|| ((int) (car.getX2rot() + (cos * car.getSpeed())) < 0)
 				|| ((int) (car.getY2rot() + (sin * car.getSpeed())) >= (AbstractBlockRoadObject.getSize()
 						* World.X_MATRIX_STRING))
 				|| ((int) (car.getX2rot() + (cos * car.getSpeed())) >= (AbstractBlockRoadObject.getSize()
 						* World.Y_MATRIX_STRING))
 				||
 
-		((int) (car.getY3rot() + (sin * car.getSpeed())) < 0) || ((int) (car.getX3rot() + (cos * car.getSpeed())) < 0)
+				((int) (car.getY3rot() + (sin * car.getSpeed())) < 0)
+				|| ((int) (car.getX3rot() + (cos * car.getSpeed())) < 0)
 				|| ((int) (car.getY3rot() + (sin * car.getSpeed())) >= (AbstractBlockRoadObject.getSize()
 						* World.X_MATRIX_STRING))
 				|| ((int) (car.getX3rot() + (cos * car.getSpeed())) >= (AbstractBlockRoadObject.getSize()
 						* World.Y_MATRIX_STRING))
 				||
 
-		((int) (car.getY4rot() + (sin * car.getSpeed())) < 0) || ((int) (car.getX4rot() + (cos * car.getSpeed())) < 0)
+				((int) (car.getY4rot() + (sin * car.getSpeed())) < 0)
+				|| ((int) (car.getX4rot() + (cos * car.getSpeed())) < 0)
 				|| ((int) (car.getY4rot() + (sin * car.getSpeed())) >= (AbstractBlockRoadObject.getSize()
 						* World.X_MATRIX_STRING))
 				|| ((int) (car.getX4rot() + (cos * car.getSpeed())) >= (AbstractBlockRoadObject.getSize()
@@ -254,11 +294,5 @@ public abstract class AbstractCarManager implements CarManager {
 		if ((car.getSpeed() > -0.2) && (car.getSpeed() < 0.2) && (!car.isUP() && !car.isDOWN())) {
 			car.setSpeed(0);
 		}
-	}
-
-	@Override
-	public void intersect(ArrayList<CarManager> carManagerList) {
-		// TODO Auto-generated method stub
-
 	}
 }

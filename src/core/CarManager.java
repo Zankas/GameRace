@@ -11,7 +11,7 @@ public interface CarManager {
 
 	void collisionStart();
 
-	void updateCar(ArrayList<CarManager> carManagerList);
+	void updateCar(ArrayList<CarManager> carManagerList, int i);
 
 	Car getCar();
 
@@ -21,6 +21,6 @@ public interface CarManager {
 
 	Checkpoints getCheckpoints();
 	
-	void intersect(ArrayList<CarManager> carManagerList);
+	boolean intersect(CarManager carManager);
 
 }

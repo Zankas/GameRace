@@ -946,7 +946,7 @@ public class GamePanel extends JPanel {
 		// paintCheckPoint(g); //debug
 		// paintStart(g); //debug
 		// paintWorld(g); //debug
-		// paintDebugCar(g); // debug
+//		 paintDebugCar(g); // debug
 
 		paintPanelGame(g);
 
