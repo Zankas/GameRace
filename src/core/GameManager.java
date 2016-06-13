@@ -98,6 +98,8 @@ public class GameManager {
 						for(int i = 0; i < carManagerList.size();i++) 
 						{
 							carManagerList.get(i).updateCar(carManagerList,i);
+//							carManagerList.get(i).speedHandler();
+						
 						}
 					}
 				}

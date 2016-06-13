@@ -1,15 +1,11 @@
 package core;
 
-import java.awt.Rectangle;
-
 public class Car {
 
 	private int ID;
 
 	private static final int WIDTH = 60;
 	private static final int LENGHT = 30;
-	
-	private Rectangle rect;
 
 	private double x1;
 	private double y1;
@@ -43,7 +39,6 @@ public class Car {
 		setXYrotate();
 		setAngle(0);
 		ID = 1;
-		this.setRect(new Rectangle((int)x1rot, (int)y1rot, WIDTH, LENGHT));
 	}
 
 	public Car(Car car) {
@@ -52,7 +47,6 @@ public class Car {
 		setXYrotate();
 		setAngle(0);
 		this.ID = car.ID + 1;
-		this.setRect(new Rectangle((int)x1rot, (int)y1rot, WIDTH, LENGHT));
 	}
 //
 //	public Car(Car car, int value) {
@@ -132,8 +126,6 @@ public class Car {
 					+ (y4 - (((y2 - y1) / 2) + y1)) * Math.cos(angle);
 		}
 		
-		rect.setLocation((int)x1rot, (int)y1rot);
-
 	}
 	
 	
@@ -377,13 +369,5 @@ public class Car {
 
 	public void setY4rot(double y4rot) {
 		this.y4rot = y4rot;
-	}
-
-	public Rectangle getRect() {
-		return rect;
-	}
-
-	public void setRect(Rectangle rect) {
-		this.rect = rect;
 	}
 }

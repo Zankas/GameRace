@@ -345,9 +345,6 @@ public class GamePanel extends JPanel {
 			}
 			String tmp = br.readLine();
 			if (tmp != null) {
-				// FIXME
-				// game.getWorld().getCheckpoints().setTotalLaps(Integer.parseInt(tmp));
-
 				for (CarManager c : game.getCarManagerList()) {
 
 					c.getCheckpoints().setTotalLaps(Integer.parseInt(tmp));
@@ -415,8 +412,6 @@ public class GamePanel extends JPanel {
 	}
 
 	private void moveCamera() {
-		// FIXME
-
 		x = (((int) game.getWorld().getCar().getX1() + (int) game.getWorld().getCar().getX3()) / 2) + I;
 
 		y = (((int) game.getWorld().getCar().getY1() + (int) game.getWorld().getCar().getY2()) / 2) + J;
@@ -946,7 +941,7 @@ public class GamePanel extends JPanel {
 		// paintCheckPoint(g); //debug
 		// paintStart(g); //debug
 		// paintWorld(g); //debug
-//		 paintDebugCar(g); // debug
+		// paintDebugCar(g); // debug
 
 		paintPanelGame(g);
 

@@ -7,7 +7,11 @@ import java.util.ArrayList;
 public abstract class AbstractCarManager implements CarManager {
 	Car car;
 	World world;
+	Direction direction;
 	protected Checkpoints checkpoints;
+
+	private double xCenter;
+	private double yCenter;
 
 	public AbstractCarManager(World w, Car car) {
 		this.world = w;
@@ -46,15 +50,28 @@ public abstract class AbstractCarManager implements CarManager {
 		moving(true);
 		check();
 		moving(false);
-		// for (CarManager cm : carManagerList) {
-		// if (car.getID() != cm.getCar().getID())
+		setCenter();
 		for (int j = i + 1; j < carManagerList.size(); j++)
 			if (intersect(carManagerList.get(j))) {
-				// TODO PHYSICAL FUNCTION FOR COLLISION.
-				System.out.println(
-						"car: " + car.getID() + " collide with car :" + carManagerList.get(j).getCar().getID());
+				// System.out.println(
+				// "car: " + car.getID() + " collide with car :" +
+				// carManagerList.get(j).getCar().getID());
+				responseCollision(this.car);
+				responseCollision(carManagerList.get(j).getCar());
 			}
-		// }
+	}
+
+	private void setCenter() {
+		if (direction == Direction.UP) {
+
+		} else if (direction == Direction.DOWN) {
+
+		} else if (direction == Direction.LEFT) {
+
+		} else if (direction == Direction.RIGHT) {
+
+		}
+
 	}
 
 	private void moving(boolean condition) {
@@ -92,9 +109,9 @@ public abstract class AbstractCarManager implements CarManager {
 
 	abstract void totalMove();
 
+	// Collision Detection.
 	@Override
 	public boolean intersect(CarManager carManager) {
-		// FIXME (add phical reaction.)
 
 		int[] xpoints = { (int) car.getX1rot(), (int) car.getX2rot(), (int) car.getX3rot(), (int) car.getX4rot() };
 		int[] ypoints = { (int) car.getY1rot(), (int) car.getY2rot(), (int) car.getY3rot(), (int) car.getY4rot() };
@@ -116,6 +133,66 @@ public abstract class AbstractCarManager implements CarManager {
 
 		return !areaA.isEmpty();
 
+	}
+
+	void responseCollision(Car car) {
+		// FIXME
+		if (car.isLEFT()) {
+			if (car.getSpeed() != 0) {
+				if (car.getSpeed() < 0) {
+					car.setAngle(car.getAngle() - 0.012);
+				} else {
+					car.setAngle(car.getAngle() + 0.012);
+				}
+			}
+
+		} else if (car.isRIGHT()) {
+			if (car.getSpeed() != 0) {
+				if (car.getSpeed() < 0) {
+					car.setAngle(car.getAngle() + 0.012);
+				} else {
+					car.setAngle(car.getAngle() - 0.012);
+				}
+			}
+		} else {
+			// gestione velocita' per marcia avanti
+			if (car.isUP()) {
+				if (car.getSpeed() < 4)
+					car.setSpeed(car.getSpeed() - 0.05);
+			}
+			if (!car.isUP()) {
+				if (car.getSpeed() >= 0.05)
+					car.setSpeed(car.getSpeed() + 0.06);
+			}
+			if (car.isDOWN()) {
+				if (car.getSpeed() >= 0.15)
+					car.setSpeed(car.getSpeed() + 0.16);
+			}
+
+			// gestione velocita' per marcia indietro
+			if (car.isDOWN()) {
+				if (car.getSpeed() > -2)
+					car.setSpeed(car.getSpeed() + 0.05);
+			}
+			if (!car.isDOWN()) {
+				if (car.getSpeed() <= -0.05)
+					car.setSpeed(car.getSpeed() - 0.06);
+			}
+			if (car.isUP()) {
+				if (car.getSpeed() <= -0.15)
+					car.setSpeed(car.getSpeed() - 0.16);
+			}
+
+			if ((car.getSpeed() > -0.2) && (car.getSpeed() < 0.2) && (!car.isUP() && !car.isDOWN())) {
+				car.setSpeed(0);
+			}
+		}
+
+		if (car.getAngle() < 0)
+			car.setAngle(car.getAngle() + 6.283185307179586);
+		if (car.getAngle() >= 6.283185307179586) {
+			car.setAngle(0);
+		}
 	}
 
 	void check() {

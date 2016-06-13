@@ -1,12 +1,9 @@
 package core;
 
-import java.util.ArrayList;
-
 public class CarManagerAi extends AbstractCarManager {
 
 	BlockRoadObject lastPiece;
 	GameManager game;
-	Direction direction;
 	boolean alpha = true;
 	boolean beta;
 	double lastX, lastY;
@@ -226,14 +223,6 @@ public class CarManagerAi extends AbstractCarManager {
 		}
 
 	}
-
-	// XXX
-	// private void checkBOOL() {
-	// System.out.println("DO\t" + car.isDOWN());
-	// System.out.println("LE\t" + car.isLEFT());
-	// System.out.println("RI\t" + car.isRIGHT());
-	// System.out.println("UP\t" + car.isUP());
-	// }
 
 	private void steerLeft() {
 		car.setLEFT(true);

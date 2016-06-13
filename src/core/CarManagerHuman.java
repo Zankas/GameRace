@@ -9,13 +9,29 @@ public class CarManagerHuman extends AbstractCarManager {
 	@Override
 	void totalMove() {
 		car.move(world);
+		setDirection();
 
 		// DebugFUNCTION
 		// debug();
+	}
 
+	private void setDirection() {
+
+		if (car.getX1rot() < car.getX3rot() && car.getY1rot() < car.getY2rot()) {
+			direction = Direction.RIGHT;
+		} else if (car.getX2rot() < car.getX1rot() && car.getY2rot() < car.getY4rot()) {
+			direction = Direction.RIGHT;
+		} else if (car.getX3rot() < car.getX4rot() && car.getY3rot() < car.getY1rot()) {
+			direction = Direction.RIGHT;
+		} else if (car.getX4rot() < car.getX2rot() && car.getY4rot() < car.getY3rot()) {
+			direction = Direction.RIGHT;
+		}
 	}
 
 	void debug() {
+
+		System.out.println(direction);
+
 		System.out.println("X1 :" + car.getX1());
 		System.out.println("X2 :" + car.getX2());
 		System.out.println("X3 :" + car.getX3());
