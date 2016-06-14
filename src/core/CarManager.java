@@ -14,6 +14,8 @@ public interface CarManager {
 	void updateCar(ArrayList<CarManager> carManagerList, int i);
 
 	Car getCar();
+	
+	Direction getDirection();
 
 	void makeCheckPoint();
 
@@ -21,6 +23,6 @@ public interface CarManager {
 
 	Checkpoints getCheckpoints();
 	
-	boolean intersect(CarManager carManager);
+	boolean collisionDetection(Car car);
 
 }

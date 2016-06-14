@@ -50,28 +50,72 @@ public abstract class AbstractCarManager implements CarManager {
 		moving(true);
 		check();
 		moving(false);
-		setCenter();
 		for (int j = i + 1; j < carManagerList.size(); j++)
-			if (intersect(carManagerList.get(j))) {
-				// System.out.println(
-				// "car: " + car.getID() + " collide with car :" +
-				// carManagerList.get(j).getCar().getID());
-				responseCollision(this.car);
-				responseCollision(carManagerList.get(j).getCar());
+			if (collisionDetection(carManagerList.get(j).getCar())) {
+				 System.out.println(
+				 "car: " + car.getID() + " collide with car :" +
+				 carManagerList.get(j).getCar().getID());
+				final int behaviour = aheadCar(carManagerList.get(j));
+				System.out.println(behaviour);
+				responseCollision(this.car, behaviour);
+				responseCollision(carManagerList.get(j).getCar(), behaviour + 1);
 			}
 	}
 
-	private void setCenter() {
-		if (direction == Direction.UP) {
+	private int aheadCar(CarManager carManager) {
 
+		// TODO
+		// DA FARE LA CHECK CON IL RITORNO NEL CASO UNA CAR SFONDI UN'ALTRA CAR.
+
+		if (this.direction == Direction.UP) {
+			if (carManager.getDirection() == Direction.DOWN)
+				return 4;
+			else if (carManager.getDirection() == Direction.UP) {
+				if (findCenter(this.getCar().getY1rot(), this.getCar().getY4rot()) < findCenter(
+						carManager.getCar().getY1rot(), carManager.getCar().getY4rot())) {
+					return 0;
+				} else
+					return 2;
+			}
 		} else if (direction == Direction.DOWN) {
-
+			if (carManager.getDirection() == Direction.UP)
+				return 4;
+			else if (carManager.getDirection() == Direction.DOWN) {
+				if (findCenter(this.getCar().getY1rot(), this.getCar().getY4rot()) < findCenter(
+						carManager.getCar().getY1rot(), carManager.getCar().getY4rot())) {
+					return 2;
+				} else
+					return 0;
+			}
 		} else if (direction == Direction.LEFT) {
-
+			if (carManager.getDirection() == Direction.RIGHT)
+				return 4;
+			else if (carManager.getDirection() == Direction.LEFT) {
+				if (findCenter(this.getCar().getX1rot(), this.getCar().getX4rot()) < findCenter(
+						carManager.getCar().getX1rot(), carManager.getCar().getX4rot())) {
+					return 0;
+				} else {
+					return 2;
+				}
+			}
 		} else if (direction == Direction.RIGHT) {
-
+			if (carManager.getDirection() == Direction.LEFT)
+				return 4;
+			else if (carManager.getDirection() == Direction.RIGHT) {
+				if (findCenter(this.getCar().getX1rot(), this.getCar().getX4rot()) < findCenter(
+						carManager.getCar().getX1rot(), carManager.getCar().getX4rot())) {
+					return 2;
+				} else
+					return 0;
+			}
 		}
 
+		return -1;
+
+	}
+
+	private double findCenter(double firstVar, double secondVar) {
+		return Math.abs((firstVar + secondVar) / 2);
 	}
 
 	private void moving(boolean condition) {
@@ -111,23 +155,25 @@ public abstract class AbstractCarManager implements CarManager {
 
 	// Collision Detection.
 	@Override
-	public boolean intersect(CarManager carManager) {
+	public boolean collisionDetection(Car car) {
 
-		int[] xpoints = { (int) car.getX1rot(), (int) car.getX2rot(), (int) car.getX3rot(), (int) car.getX4rot() };
-		int[] ypoints = { (int) car.getY1rot(), (int) car.getY2rot(), (int) car.getY3rot(), (int) car.getY4rot() };
+		int[] xpoints = { (int) this.car.getX1rot(), (int) this.car.getX2rot(), (int) this.car.getX3rot(),
+				(int) this.car.getX4rot() };
+		int[] ypoints = { (int) this.car.getY1rot(), (int) this.car.getY2rot(), (int) this.car.getY3rot(),
+				(int) this.car.getY4rot() };
 		int npoints = 4;
 
 		Area areaA = new Area(new Polygon(xpoints, ypoints, npoints));
 
-		xpoints[0] = (int) carManager.getCar().getX1rot();
-		xpoints[1] = (int) carManager.getCar().getX2rot();
-		xpoints[2] = (int) carManager.getCar().getX4rot();
-		xpoints[3] = (int) carManager.getCar().getX4rot();
+		xpoints[0] = (int) car.getX1rot();
+		xpoints[1] = (int) car.getX2rot();
+		xpoints[2] = (int) car.getX4rot();
+		xpoints[3] = (int) car.getX4rot();
 
-		ypoints[0] = (int) carManager.getCar().getY1rot();
-		ypoints[1] = (int) carManager.getCar().getY2rot();
-		ypoints[2] = (int) carManager.getCar().getY4rot();
-		ypoints[3] = (int) carManager.getCar().getY4rot();
+		ypoints[0] = (int) car.getY1rot();
+		ypoints[1] = (int) car.getY2rot();
+		ypoints[2] = (int) car.getY4rot();
+		ypoints[3] = (int) car.getY4rot();
 
 		areaA.intersect(new Area(new Polygon(xpoints, ypoints, npoints)));
 
@@ -135,26 +181,46 @@ public abstract class AbstractCarManager implements CarManager {
 
 	}
 
-	void responseCollision(Car car) {
+	void responseCollision(Car car, int behaviour) {
 		// FIXME
-		if (car.isLEFT()) {
-			if (car.getSpeed() != 0) {
-				if (car.getSpeed() < 0) {
-					car.setAngle(car.getAngle() - 0.012);
-				} else {
-					car.setAngle(car.getAngle() + 0.012);
-				}
+		System.out.println("YES");
+		if (behaviour == 0 || behaviour == 3) { // CAR STA ANDANDO AVANTI E
+												// VIENE COLPITA DA DIETRO.
+			// gestione velocita' per marcia avanti
+			if (car.isUP()) {
+				if (car.getSpeed() < 4)
+					car.setSpeed(car.getSpeed() + 0.04);
+			}
+			if (!car.isUP()) {
+				if (car.getSpeed() >= 0.05)
+					car.setSpeed(car.getSpeed() - 0.05);
+			}
+			if (car.isDOWN()) {
+				if (car.getSpeed() >= 0.15)
+					car.setSpeed(car.getSpeed() - 0.15);
 			}
 
-		} else if (car.isRIGHT()) {
-			if (car.getSpeed() != 0) {
-				if (car.getSpeed() < 0) {
-					car.setAngle(car.getAngle() + 0.012);
-				} else {
-					car.setAngle(car.getAngle() - 0.012);
-				}
+			// gestione velocita' per marcia indietro
+			if (car.isDOWN()) {
+				if (car.getSpeed() > -2)
+					car.setSpeed(car.getSpeed() - 0.04);
 			}
-		} else {
+			if (!car.isDOWN()) {
+				if (car.getSpeed() <= -0.05)
+					car.setSpeed(car.getSpeed() + 0.05);
+			}
+			if (car.isUP()) {
+				if (car.getSpeed() <= -0.15)
+					car.setSpeed(car.getSpeed() + 0.15);
+			}
+
+			if ((car.getSpeed() > -0.2) && (car.getSpeed() < 0.2) && (!car.isUP() && !car.isDOWN())) {
+				car.setSpeed(0);
+			}
+			System.out.println("DOUBE");
+
+		} else if (behaviour == 1 || behaviour == 2 || behaviour == 4 || behaviour == 5) { // CAR STA ANDANDO AVANTI
+														// E COLPISCE DAVANTI.
 			// gestione velocita' per marcia avanti
 			if (car.isUP()) {
 				if (car.getSpeed() < 4)
@@ -186,6 +252,27 @@ public abstract class AbstractCarManager implements CarManager {
 			if ((car.getSpeed() > -0.2) && (car.getSpeed() < 0.2) && (!car.isUP() && !car.isDOWN())) {
 				car.setSpeed(0);
 			}
+		} else if (behaviour == 4 || behaviour == 5) { // CAR FANNO FACE TO FACE.
+			
+
+		}
+		if (car.isLEFT()) {
+			if (car.getSpeed() != 0) {
+				if (car.getSpeed() < 0) {
+					car.setAngle(car.getAngle() - 0.012);
+				} else {
+					car.setAngle(car.getAngle() + 0.012);
+				}
+			}
+
+		} else if (car.isRIGHT()) {
+			if (car.getSpeed() != 0) {
+				if (car.getSpeed() < 0) {
+					car.setAngle(car.getAngle() + 0.012);
+				} else {
+					car.setAngle(car.getAngle() - 0.012);
+				}
+			}
 		}
 
 		if (car.getAngle() < 0)
@@ -193,6 +280,41 @@ public abstract class AbstractCarManager implements CarManager {
 		if (car.getAngle() >= 6.283185307179586) {
 			car.setAngle(0);
 		}
+
+		// else {
+		// // gestione velocita' per marcia avanti
+		// if (car.isUP()) {
+		// if (car.getSpeed() < 4)
+		// car.setSpeed(car.getSpeed() - 0.05);
+		// }
+		// if (!car.isUP()) {
+		// if (car.getSpeed() >= 0.05)
+		// car.setSpeed(car.getSpeed() + 0.06);
+		// }
+		// if (car.isDOWN()) {
+		// if (car.getSpeed() >= 0.15)
+		// car.setSpeed(car.getSpeed() + 0.16);
+		// }
+		//
+		// // gestione velocita' per marcia indietro
+		// if (car.isDOWN()) {
+		// if (car.getSpeed() > -2)
+		// car.setSpeed(car.getSpeed() + 0.05);
+		// }
+		// if (!car.isDOWN()) {
+		// if (car.getSpeed() <= -0.05)
+		// car.setSpeed(car.getSpeed() - 0.06);
+		// }
+		// if (car.isUP()) {
+		// if (car.getSpeed() <= -0.15)
+		// car.setSpeed(car.getSpeed() - 0.16);
+		// }
+		//
+		// if ((car.getSpeed() > -0.2) && (car.getSpeed() < 0.2) && (!car.isUP()
+		// && !car.isDOWN())) {
+		// car.setSpeed(0);
+		// }
+		// }
 	}
 
 	void check() {
@@ -371,5 +493,10 @@ public abstract class AbstractCarManager implements CarManager {
 		if ((car.getSpeed() > -0.2) && (car.getSpeed() < 0.2) && (!car.isUP() && !car.isDOWN())) {
 			car.setSpeed(0);
 		}
+	}
+
+	@Override
+	public Direction getDirection() {
+		return direction;
 	}
 }

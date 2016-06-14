@@ -20,11 +20,11 @@ public class CarManagerHuman extends AbstractCarManager {
 		if (car.getX1rot() < car.getX3rot() && car.getY1rot() < car.getY2rot()) {
 			direction = Direction.RIGHT;
 		} else if (car.getX2rot() < car.getX1rot() && car.getY2rot() < car.getY4rot()) {
-			direction = Direction.RIGHT;
+			direction = Direction.DOWN;
 		} else if (car.getX3rot() < car.getX4rot() && car.getY3rot() < car.getY1rot()) {
-			direction = Direction.RIGHT;
+			direction = Direction.UP;
 		} else if (car.getX4rot() < car.getX2rot() && car.getY4rot() < car.getY3rot()) {
-			direction = Direction.RIGHT;
+			direction = Direction.LEFT;
 		}
 	}
 
