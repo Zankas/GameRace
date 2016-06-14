@@ -52,14 +52,30 @@ public abstract class AbstractCarManager implements CarManager {
 		moving(false);
 		for (int j = i + 1; j < carManagerList.size(); j++)
 			if (collisionDetection(carManagerList.get(j).getCar())) {
-				 System.out.println(
-				 "car: " + car.getID() + " collide with car :" +
-				 carManagerList.get(j).getCar().getID());
-				final int behaviour = aheadCar(carManagerList.get(j));
-				System.out.println(behaviour);
-				responseCollision(this.car, behaviour);
-				responseCollision(carManagerList.get(j).getCar(), behaviour + 1);
+				// System.out.println(
+				// "car: " + car.getID() + " collide with car :" +
+				// carManagerList.get(j).getCar().getID());
+				// final int behaviour = aheadCar(carManagerList.get(j));
+				// System.out.println(behaviour);
+				// responseCollision(this.car, behaviour);
+				// responseCollision(carManagerList.get(j).getCar(), behaviour +
+				// 1);
+
+				applyCollision(carManagerList.get(j).getCar());
 			}
+	}
+
+	private void applyCollision(Car car2) {
+		if (inRange(car2.getAngle()) == 0) {
+
+		}
+	}
+
+	private int inRange(double angle) {
+		// SAME RANGE OF ANGLE == 1 , OPPOSITE RANGE == 0 , NEXT UP = 1, NEXT
+		// DOWN = 2.
+
+		return -1;
 	}
 
 	private int aheadCar(CarManager carManager) {
@@ -183,77 +199,36 @@ public abstract class AbstractCarManager implements CarManager {
 
 	void responseCollision(Car car, int behaviour) {
 		// FIXME
-		System.out.println("YES");
+
 		if (behaviour == 0 || behaviour == 3) { // CAR STA ANDANDO AVANTI E
 												// VIENE COLPITA DA DIETRO.
 			// gestione velocita' per marcia avanti
 			if (car.isUP()) {
-				if (car.getSpeed() < 4)
-					car.setSpeed(car.getSpeed() + 0.04);
-			}
-			if (!car.isUP()) {
-				if (car.getSpeed() >= 0.05)
-					car.setSpeed(car.getSpeed() - 0.05);
-			}
-			if (car.isDOWN()) {
-				if (car.getSpeed() >= 0.15)
-					car.setSpeed(car.getSpeed() - 0.15);
+				car.setSpeed(car.getSpeed() + 0.01);
+			} else if (car.isDOWN()) {
+				car.setSpeed(-car.getSpeed() + 0.01);
+			} else {
+				car.setSpeed(car.getSpeed() + 0.03);
 			}
 
-			// gestione velocita' per marcia indietro
-			if (car.isDOWN()) {
-				if (car.getSpeed() > -2)
-					car.setSpeed(car.getSpeed() - 0.04);
+		} else if (behaviour == 1 || behaviour == 2) {
+			// CAR
+			// STA
+			// ANDANDO
+			// AVANTI
+			// E COLPISCE DAVANTI.
+			if (car.isUP() || car.isDOWN()) {
+				car.setSpeed(-car.getSpeed());
+			} else {
+				car.setSpeed(car.getSpeed() + 0.04);
 			}
-			if (!car.isDOWN()) {
-				if (car.getSpeed() <= -0.05)
-					car.setSpeed(car.getSpeed() + 0.05);
+		} else if (behaviour == 4 || behaviour == 5) {
+			// CAR FANNO FACE TO FACE.
+			if (car.isUP() || car.isDOWN()) {
+				car.setSpeed(-car.getSpeed());
+			} else {
+				car.setSpeed(car.getSpeed() - 0.04);
 			}
-			if (car.isUP()) {
-				if (car.getSpeed() <= -0.15)
-					car.setSpeed(car.getSpeed() + 0.15);
-			}
-
-			if ((car.getSpeed() > -0.2) && (car.getSpeed() < 0.2) && (!car.isUP() && !car.isDOWN())) {
-				car.setSpeed(0);
-			}
-			System.out.println("DOUBE");
-
-		} else if (behaviour == 1 || behaviour == 2 || behaviour == 4 || behaviour == 5) { // CAR STA ANDANDO AVANTI
-														// E COLPISCE DAVANTI.
-			// gestione velocita' per marcia avanti
-			if (car.isUP()) {
-				if (car.getSpeed() < 4)
-					car.setSpeed(car.getSpeed() - 0.05);
-			}
-			if (!car.isUP()) {
-				if (car.getSpeed() >= 0.05)
-					car.setSpeed(car.getSpeed() + 0.06);
-			}
-			if (car.isDOWN()) {
-				if (car.getSpeed() >= 0.15)
-					car.setSpeed(car.getSpeed() + 0.16);
-			}
-
-			// gestione velocita' per marcia indietro
-			if (car.isDOWN()) {
-				if (car.getSpeed() > -2)
-					car.setSpeed(car.getSpeed() + 0.05);
-			}
-			if (!car.isDOWN()) {
-				if (car.getSpeed() <= -0.05)
-					car.setSpeed(car.getSpeed() - 0.06);
-			}
-			if (car.isUP()) {
-				if (car.getSpeed() <= -0.15)
-					car.setSpeed(car.getSpeed() - 0.16);
-			}
-
-			if ((car.getSpeed() > -0.2) && (car.getSpeed() < 0.2) && (!car.isUP() && !car.isDOWN())) {
-				car.setSpeed(0);
-			}
-		} else if (behaviour == 4 || behaviour == 5) { // CAR FANNO FACE TO FACE.
-			
 
 		}
 		if (car.isLEFT()) {
