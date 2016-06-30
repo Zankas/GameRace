@@ -109,6 +109,11 @@ public class OptionsPanel extends JPanel {
 		save.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		deleteAll.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		
+		esc.setToolTipText("Click here to exit editor");
+		load.setToolTipText("Click here to load a track");
+		save.setToolTipText("Click here to save a track");
+		deleteAll.setToolTipText("Click here to delete all pieces");
+		
 		
 		this.add(esc,constraints);
 		constraints.gridy++;

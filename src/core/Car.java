@@ -1,8 +1,11 @@
 package core;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class Car {
 
-	private int ID;
+	final private int ID;
 
 	private static final int WIDTH = 60;
 	private static final int LENGHT = 30;
@@ -33,50 +36,68 @@ public class Car {
 	private boolean LEFT = false;
 	private boolean RIGHT = false;
 
+	public Lock lock = new ReentrantLock();
+
 	public Car(int x, int y) {
+		lock.lock();
+
 		setX(x);
 		setY(y);
 		setXYrotate();
 		setAngle(0);
 		ID = 1;
+
+		lock.unlock();
 	}
 
 	public Car(Car car) {
+		lock.lock();
+
 		setX((int) car.getX1());
 		setY((int) car.getY1());
 		setXYrotate();
 		setAngle(0);
 		this.ID = car.ID + 1;
+
+		lock.unlock();
 	}
-//
-//	public Car(Car car, int value) {
-//		if (value == 1) {
-//			setX((int) car.getX1() + (int) (car.getX1() - car.getX3() / 2));
-//			setY((int) car.getY1() + (int) (car.getY2() - car.getY1() / 2));
-//			setXYrotate();
-//			setAngle(0);
-//			this.ID = car.ID + 1;
-//		}
-//
-//	}
 
 	public double getSpeed() {
-		return speed;
+		try {
+			lock.lock();
+			return speed;
+		} finally {
+			lock.unlock();
+		}
+
 	}
 
 	public void setSpeed(double speed) {
+		lock.lock();
 		this.speed = speed;
+		lock.unlock();
 	}
 
 	public double getAngle() {
-		return angle;
+		try {
+			lock.lock();
+			return angle;
+		} finally {
+			lock.unlock();
+		}
+
 	}
 
 	public void setAngle(double angle) {
+		lock.lock();
+
 		this.angle = angle;
+
+		lock.unlock();
 	}
 
 	void moveXYrot(World world) {
+		lock.lock();
 		// rotazione dei 4 punti logici della macchina
 		// (x3-x1)/3 punto di centro di rotazione sull'asse x
 		// (y2-y1)/2 punto di centro di rotazione sull'asse y
@@ -124,77 +145,165 @@ public class Car {
 					+ (y3 - (((y2 - y1) / 2) + y1)) * Math.cos(angle);
 			y4rot = (((y2 - y1) / 2) + y1) + (x4 - (((x3 - x1) / 3) + x1)) * Math.sin(angle)
 					+ (y4 - (((y2 - y1) / 2) + y1)) * Math.cos(angle);
+		} else {
+			// System.out.println("CAR " + ID + " BLOCCATTOOOOOO");
 		}
-		
+
+		lock.unlock();
 	}
-	
-	
+
 	public int getID() {
-		return ID;
+		try {
+			lock.lock();
+			return ID;
+		} finally {
+			lock.unlock();
+		}
+
 	}
 
 	public double getX1() {
-		return x1;
+		try {
+			lock.lock();
+			return x1;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public double getY1() {
-		return y1;
+		try {
+			lock.lock();
+			return y1;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public double getX2() {
-		return x2;
+		try {
+			lock.lock();
+			return x2;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public double getY2() {
-		return y2;
+		try {
+			lock.lock();
+			return y2;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public double getX3() {
-		return x3;
+		try {
+			lock.lock();
+			return x3;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public double getY3() {
-		return y3;
+		try {
+			lock.lock();
+			return y3;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public double getX4() {
-		return x4;
+		try {
+			lock.lock();
+			return x4;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public double getY4() {
-		return y4;
+		try {
+			lock.lock();
+			return y4;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public double getX1rot() {
-		return x1rot;
+		try {
+			lock.lock();
+			return x1rot;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public double getY1rot() {
-		return y1rot;
+		try {
+			lock.lock();
+			return y1rot;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public double getX2rot() {
-		return x2rot;
+		try {
+			lock.lock();
+			return x2rot;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public double getY2rot() {
-		return y2rot;
+		try {
+			lock.lock();
+			return y2rot;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public double getX3rot() {
-		return x3rot;
+		try {
+			lock.lock();
+			return x3rot;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public double getY3rot() {
-		return y3rot;
+		try {
+			lock.lock();
+			return y3rot;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public double getX4rot() {
-		return x4rot;
+		try {
+			lock.lock();
+			return x4rot;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public double getY4rot() {
-		return y4rot;
+		try {
+			lock.lock();
+			return y4rot;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public static int getWidth() {
@@ -206,20 +315,25 @@ public class Car {
 	}
 
 	public void setX(int x) {
+		lock.lock();
 		x1 = x;
 		x2 = x1;
 		x3 = x + WIDTH;
 		x4 = x3;
+		lock.unlock();
 	}
 
 	public void setY(int y) {
+		lock.lock();
 		y1 = y;
 		y2 = y + LENGHT;
 		y3 = y1;
 		y4 = y2;
+		lock.unlock();
 	}
 
 	private void setXYrotate() {
+		lock.lock();
 		x1rot = x1;
 		x2rot = x2;
 		x3rot = x3;
@@ -229,10 +343,11 @@ public class Car {
 		y2rot = y2;
 		y3rot = y3;
 		y4rot = y4;
+		lock.unlock();
 	}
 
 	void move(World world) {
-
+		lock.lock();
 		double cos = Math.cos(angle);
 		double sin = Math.sin(angle);
 
@@ -242,7 +357,7 @@ public class Car {
 				&& x4 + cos * speed >= 0 && x4 + cos * speed < AbstractBlockRoadObject.getSize() * World.Y_MATRIX_STRING
 				&&
 
-		y1 + sin * speed >= 0 && y1 + sin * speed < AbstractBlockRoadObject.getSize() * World.X_MATRIX_STRING
+				y1 + sin * speed >= 0 && y1 + sin * speed < AbstractBlockRoadObject.getSize() * World.X_MATRIX_STRING
 				&& y2 + sin * speed >= 0 && y2 + sin * speed < AbstractBlockRoadObject.getSize() * World.X_MATRIX_STRING
 				&& y3 + sin * speed >= 0 && y3 + sin * speed < AbstractBlockRoadObject.getSize() * World.X_MATRIX_STRING
 				&& y4 + sin * speed >= 0
@@ -262,112 +377,183 @@ public class Car {
 			speed = 0;
 
 		}
+		lock.unlock();
 	}
 
 	public void setUpDownLeftRightFalse() {
+		lock.lock();
 		UP = false;
 		DOWN = false;
 		LEFT = false;
 		RIGHT = false;
+		lock.unlock();
 	}
 
 	public boolean isUP() {
-		return UP;
+		try {
+			lock.lock();
+			return UP;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void setUP(boolean up) {
+		lock.lock();
 		UP = up;
+		lock.unlock();
 	}
 
 	public boolean isDOWN() {
-		return DOWN;
+		try {
+			lock.lock();
+			return DOWN;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public boolean isRotate() {
-		return RIGHT || LEFT;
+		try {
+			lock.lock();
+			return RIGHT || LEFT;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void setDOWN(boolean down) {
+		lock.lock();
 		DOWN = down;
+		lock.unlock();
 	}
 
 	public boolean isLEFT() {
-		return LEFT;
+		try {
+			lock.lock();
+			return LEFT;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void setLEFT(boolean left) {
+		lock.lock();
 		LEFT = left;
+		lock.unlock();
 	}
 
 	public boolean isRIGHT() {
-		return RIGHT;
+		try {
+			lock.lock();
+			return RIGHT;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void setRIGHT(boolean right) {
+		lock.lock();
 		RIGHT = right;
+		lock.unlock();
 	}
 
 	public void setX1(double x1) {
+		lock.lock();
 		this.x1 = x1;
+		lock.unlock();
 	}
 
 	public void setY1(double y1) {
+		lock.lock();
 		this.y1 = y1;
+		lock.lock();
 	}
 
 	public void setX2(double x2) {
+		lock.lock();
 		this.x2 = x2;
+		lock.unlock();
 	}
 
 	public void setY2(double y2) {
+		lock.lock();
 		this.y2 = y2;
+		lock.unlock();
 	}
 
 	public void setX3(double x3) {
+		lock.lock();
 		this.x3 = x3;
+		lock.unlock();
 	}
 
 	public void setY3(double y3) {
+		lock.lock();
 		this.y3 = y3;
+		lock.unlock();
 	}
 
 	public void setX4(double x4) {
+		lock.lock();
 		this.x4 = x4;
+		lock.unlock();
 	}
 
 	public void setY4(double y4) {
+		lock.lock();
 		this.y4 = y4;
+		lock.unlock();
 	}
 
 	public void setX1rot(double x1rot) {
+		lock.lock();
 		this.x1rot = x1rot;
+		lock.unlock();
 	}
 
 	public void setY1rot(double y1rot) {
+		lock.lock();
 		this.y1rot = y1rot;
+		lock.unlock();
 	}
 
 	public void setX2rot(double x2rot) {
+		lock.lock();
 		this.x2rot = x2rot;
+		lock.unlock();
 	}
 
 	public void setY2rot(double y2rot) {
+		lock.lock();
 		this.y2rot = y2rot;
+		lock.unlock();
+
 	}
 
 	public void setX3rot(double x3rot) {
+		lock.lock();
 		this.x3rot = x3rot;
+		lock.unlock();
+
 	}
 
 	public void setY3rot(double y3rot) {
+		lock.lock();
 		this.y3rot = y3rot;
+		lock.unlock();
 	}
 
 	public void setX4rot(double x4rot) {
+		lock.lock();
 		this.x4rot = x4rot;
+		lock.unlock();
+
 	}
 
 	public void setY4rot(double y4rot) {
+		lock.lock();
 		this.y4rot = y4rot;
+		lock.unlock();
 	}
 }

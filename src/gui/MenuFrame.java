@@ -9,7 +9,6 @@ import java.io.InputStream;
 
 import javax.swing.JFrame;
 
-
 public class MenuFrame extends JFrame {
 	
 	/**
@@ -46,8 +45,9 @@ public class MenuFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-	    this.setVisible(true);
+	    
 	    this.setFocusable(true);
+	    this.setVisible(true);
     }
 	
 	public Toolkit getTk() {
@@ -66,9 +66,7 @@ public class MenuFrame extends JFrame {
 	public Font getFont() {
 		return font;
 	}
-	public static void main(String[] args) {
-		new MenuFrame();
-	}
+
 	public static int resizeX(int x){
 		Toolkit tk = Toolkit.getDefaultToolkit();
         Dimension dim = tk.getScreenSize();
@@ -102,5 +100,11 @@ public class MenuFrame extends JFrame {
 			this.setVisible(true);
 			fullScreen=true;
 		}
+	}
+
+	public static void main(String[] args) {
+		LoadFrame loadFrame=new LoadFrame();
+		new MenuFrame();
+		loadFrame.dispose();
 	}
 }

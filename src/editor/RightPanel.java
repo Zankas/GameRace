@@ -3,12 +3,9 @@ package editor;
 import gui.ImageProvider;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -60,9 +57,6 @@ public class RightPanel extends JPanel implements MouseListener{
 		this.setLayout(new GridBagLayout());
 		this.setOpaque(false);
 		
-		Cursor cursorCustom = Toolkit.getDefaultToolkit().createCustomCursor(ImageProvider.getCursorPencilCopy(), 
-				new Point(0,0),"cursorCustom");
-		
 		
 		StartArray=new String [4];
 		
@@ -94,7 +88,15 @@ public class RightPanel extends JPanel implements MouseListener{
 		constraints.gridx=0;
 	    constraints.gridy=0;
 		
-		startCar.setToolTipText("Click to change direction");
+		startCar.setToolTipText("Left click to selected piece, Right click to rotate the direction");
+		grass.setToolTipText("Left click to selected piece 'Grass'");
+		horizontal.setToolTipText("Left click to selected piece 'Horizontal'");
+		vertical.setToolTipText("Left click to selected piece 'Vertical'");
+		curveLeftUp.setToolTipText("Left click to selected piece 'Curve left up'");
+		curveLeftDown.setToolTipText("Left click to selected piece 'Curve left down'");
+		curveRightUp.setToolTipText("Left click to selected piece 'Curve right up'");
+		curveRightDown.setToolTipText("Left click to selected piece 'Curve right down'");
+		
 		grass.setBackground(Color.RED.darker());
 		
 		startCar.setBorder(new BevelBorder(BevelBorder.RAISED));
@@ -106,14 +108,6 @@ public class RightPanel extends JPanel implements MouseListener{
 		curveRightUp.setBorder(new BevelBorder(BevelBorder.RAISED));
 		curveRightDown.setBorder(new BevelBorder(BevelBorder.RAISED));
 		
-		startCar.setCursor(cursorCustom);
-		grass.setCursor(cursorCustom);
-		horizontal.setCursor(cursorCustom);
-		vertical.setCursor(cursorCustom);
-		curveLeftUp.setCursor(cursorCustom);
-		curveLeftDown.setCursor(cursorCustom);
-		curveRightUp.setCursor(cursorCustom);
-		curveRightDown.setCursor(cursorCustom);
 		
 		this.add(startCar,constraints);
 		constraints.gridx++;

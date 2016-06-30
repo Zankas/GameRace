@@ -11,10 +11,10 @@ public interface CarManager {
 
 	void collisionStart();
 
-	void updateCar(ArrayList<CarManager> carManagerList, int i);
+	void updateCar(final ArrayList<CarManager> carManagerList, final int i);
 
 	Car getCar();
-	
+
 	Direction getDirection();
 
 	void makeCheckPoint();
@@ -22,7 +22,12 @@ public interface CarManager {
 	void speedHandler();
 
 	Checkpoints getCheckpoints();
-	
-	boolean collisionDetection(Car car);
 
+	boolean collisionDetection(final Car car);
+
+	void setDirection();
+
+	void setPosition(final int i);
+
+	int getPosition();
 }

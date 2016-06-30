@@ -76,9 +76,6 @@ public class InfoPanel extends JPanel{
 		constraints.gridy++;
 		panelSud.add(title,constraints);
 		
-//		panelCenter.add();
-		
-		
 		this.add(panelCenter,BorderLayout.CENTER);
 		this.add(panelSud,BorderLayout.NORTH);
 		this.add(new JPanel().add(back),BorderLayout.PAGE_END);
@@ -104,8 +101,8 @@ public class InfoPanel extends JPanel{
 		
 		g.drawImage(ImageProvider.getBackground(),0,0,null);
 		
-		g.drawImage(ImageProvider.getPanelInfo(), (dimension.width/2)-(600/2), (dimension.height-600)/2, null);
+		g.drawImage(ImageProvider.getPanelInfo(), (dimension.width/2)-(ImageProvider.getPanelInfo().getWidth(this)/2), (dimension.height-ImageProvider.getPanelInfo().getHeight(this))/2, null);
 		
-		g.drawImage(ImageProvider.getArrows(),(dimension.width/2)-(600/2)+20, ((dimension.height-600)/2)+30, null);
+		g.drawImage(ImageProvider.getArrows(),(dimension.width/2)-(ImageProvider.getPanelInfo().getWidth(this)/2)+20, ((dimension.height-ImageProvider.getPanelInfo().getHeight(this))/2)+30, null);
 	}
 }

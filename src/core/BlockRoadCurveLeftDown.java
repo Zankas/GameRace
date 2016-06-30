@@ -41,5 +41,12 @@ public class BlockRoadCurveLeftDown extends AbstractBlockRoadObject {
 				}
 			}
 		}
+		int mediumPoint = (firstEdge + secondEdge) / 2;
+		targetPoint[0][0] = mediumPoint;
+		targetPoint[0][1] = SIZE - SIZE;
+		targetPoint[1][0] = mediumPoint;
+		targetPoint[1][1] = mediumPoint;
+		targetPoint[2][0] = SIZE - 1;
+		targetPoint[2][1] = mediumPoint;
 	}
 }

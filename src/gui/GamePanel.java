@@ -42,6 +42,8 @@ public class GamePanel extends JPanel {
 	private GameManager game;
 	private RenderingHints renderingHints;
 
+	private JDialogOptions dialogOptions;
+
 	private boolean minimap = true;
 	private boolean pause = false;
 
@@ -106,7 +108,7 @@ public class GamePanel extends JPanel {
 		x = (int) (game.getWorld().getCar().getX1() + game.getWorld().getCar().getX3()) / 2 + I;
 		y = (int) (game.getWorld().getCar().getY1() + game.getWorld().getCar().getY2()) / 2 + J;
 
-		load(path);
+		recordTrack=LevelLoadSave.load(path,nameTrack,game);
 
 		game.getWorld().makeWorld();
 		game.init();
@@ -150,6 +152,7 @@ public class GamePanel extends JPanel {
 					}
 					if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 
+
 						SwingUtilities.invokeLater(new Runnable() {
 
 							@Override
@@ -158,11 +161,11 @@ public class GamePanel extends JPanel {
 								game.setUpdate(false);
 								pause = true;
 								game.getWorld().getCar().setUpDownLeftRightFalse();
-								JDialogOptions dialogOptions = new JDialogOptions(frame, GamePanel.this);
+								dialogOptions = new JDialogOptions(frame, GamePanel.this);
 								dialogOptions.setVisible(true);
-
 							}
 						});
+
 
 					}
 					if (!game.endGame()) {
@@ -257,109 +260,7 @@ public class GamePanel extends JPanel {
 		this.game = game;
 	}
 
-	private void saveRecord(long time) {
-
-		try {
-
-			File folder = new File("resource/record/");
-
-			String[] array = folder.list();
-
-			boolean itIsPresent = false;
-			boolean isBetter = false;
-
-			for (int a = 0; a < array.length; a++) {
-
-				String tmp = nameTrack + ".rec";
-
-				if (tmp.equals(array[a])) {
-					itIsPresent = true;
-					File file = new File("resource/record/" + nameTrack + ".rec");
-					FileReader fr = new FileReader(file);
-					BufferedReader br = new BufferedReader(fr);
-
-					if (time < Long.parseLong(br.readLine())) {
-						isBetter = true;
-					}
-					br.close();
-				}
-			}
-
-			if (isBetter || !itIsPresent) {
-				File file = new File("resource/record/" + nameTrack + ".rec");
-				FileWriter fw = new FileWriter(file);
-				BufferedWriter bw = new BufferedWriter(fw);
-
-				bw.write(Long.toString(time) + "\n");
-				recordTrack = time;
-				bw.flush();
-				bw.close();
-
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private long loadRecord(String path) {
-		long timeTrack = 0;
-		try {
-
-			File folder = new File("resource/record/");
-
-			String[] array = folder.list();
-
-			for (int a = 0; a < array.length; a++) {
-
-				String tmp = nameTrack + ".rec";
-
-				if (tmp.equals(array[a])) {
-
-					File file = new File(path);
-					FileReader fr = new FileReader(file);
-					BufferedReader br = new BufferedReader(fr);
-					timeTrack = Long.parseLong(br.readLine());
-					br.close();
-					return timeTrack;
-				}
-
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return timeTrack;
-	}
-
-	private void load(String pathTrack) {
-
-		String path = pathTrack;
-		recordTrack = loadRecord("resource/record/" + nameTrack + ".rec");
-		try {
-			File file = new File(path);
-			FileReader fr = new FileReader(file);
-			BufferedReader br = new BufferedReader(fr);
-			for (int i = 0; i < World.X_MATRIX_STRING; i++) {
-				for (int j = 0; j < World.Y_MATRIX_STRING; j++) {
-					game.getWorld().getMatrixString()[i][j] = br.readLine();
-				}
-			}
-			String tmp = br.readLine();
-			if (tmp != null) {
-				for (CarManager c : game.getCarManagerList()) {
-
-					c.getCheckpoints().setTotalLaps(Integer.parseInt(tmp));
-				}
-			}
-
-			br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private void paintWorldImage(final Graphics g) {
-
-		// moveCamera();
 
 		for (int i = 0; i < World.X_MATRIX_STRING; i++) {
 			for (int j = 0; j < World.Y_MATRIX_STRING; j++) {
@@ -431,7 +332,7 @@ public class GamePanel extends JPanel {
 	}
 
 	public void paintWorld(final Graphics g) { // per il debugging
-												// //////*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
+		// //////*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
 
 		int width = World.X_MATRIX_STRING * AbstractBlockRoadObject.getSize();
 		int height = World.Y_MATRIX_STRING * AbstractBlockRoadObject.getSize();
@@ -542,14 +443,28 @@ public class GamePanel extends JPanel {
 			}
 		}
 
-		g.setColor(Color.RED);
+		if(game.getWorld().getCar2()!=null){
 
-		g.fillRect(
-				(int) (game.getWorld().getCar2().getX1() / ((double) AbstractBlockRoadObject.getSize() / (double) size)
-						+ I),
-				(int) (game.getWorld().getCar2().getY1() / ((double) AbstractBlockRoadObject.getSize() / (double) size)
-						+ J),
-				6, 6);
+			g.setColor(Color.RED);
+
+			g.fillRect((int) (game.getWorld().getCar2().getX1() / ((double) AbstractBlockRoadObject.getSize() / (double) size)+ I),
+					(int) (game.getWorld().getCar2().getY1() / ((double) AbstractBlockRoadObject.getSize() / (double) size)+ J),6, 6);
+		}
+
+
+		if(game.getWorld().getCar3()!=null){
+			g.setColor(Color.GRAY.brighter());
+
+			g.fillRect((int) (game.getWorld().getCar3().getX1() / ((double) AbstractBlockRoadObject.getSize() / (double) size)+ I),
+					(int) (game.getWorld().getCar3().getY1() / ((double) AbstractBlockRoadObject.getSize() / (double) size)+ J),6, 6);
+		}
+
+		if(game.getWorld().getCar4()!=null){
+			g.setColor(Color.BLACK);
+
+			g.fillRect((int) (game.getWorld().getCar4().getX1() / ((double) AbstractBlockRoadObject.getSize() / (double) size)+ I),
+					(int) (game.getWorld().getCar4().getY1() / ((double) AbstractBlockRoadObject.getSize() / (double) size)+ J),6, 6);
+		}
 
 		g.setColor(Color.YELLOW);
 
@@ -645,6 +560,48 @@ public class GamePanel extends JPanel {
 
 	private void paintCar(Graphics2D g) {
 
+		// stampo le macchine artificiali se non sono nulle
+		if(game.getWorld().getCar2()!=null){
+			Graphics2D graphics2d2 = (Graphics2D) g.create();
+
+			graphics2d2.rotate(game.getWorld().getCar2().getAngle(),
+					(((game.getWorld().getCar2().getX3() - game.getWorld().getCar2().getX1()) / 3)
+							+ game.getWorld().getCar2().getX1() + I),
+					(((game.getWorld().getCar2().getY2() - game.getWorld().getCar2().getY1()) / 2)
+							+ game.getWorld().getCar2().getY1() + J));
+
+			graphics2d2.drawImage(ImageProvider.getCar2(), (int) game.getWorld().getCar2().getX1() + I,
+					(int) game.getWorld().getCar2().getY1() + J, null);
+		}
+
+		if(game.getWorld().getCar3()!=null){
+			Graphics2D graphics2d3 = (Graphics2D) g.create();
+
+			graphics2d3.rotate(game.getWorld().getCar3().getAngle(),
+					(((game.getWorld().getCar3().getX3() - game.getWorld().getCar3().getX1()) / 3)
+							+ game.getWorld().getCar3().getX1() + I),
+					(((game.getWorld().getCar3().getY2() - game.getWorld().getCar3().getY1()) / 2)
+							+ game.getWorld().getCar3().getY1() + J));
+
+			graphics2d3.drawImage(ImageProvider.getCar3(), (int) game.getWorld().getCar3().getX1() + I,
+					(int) game.getWorld().getCar3().getY1() + J, null);
+		}
+
+		if(game.getWorld().getCar4()!=null){
+			Graphics2D graphics2d4 = (Graphics2D) g.create();
+
+			graphics2d4.rotate(game.getWorld().getCar4().getAngle(),
+					(((game.getWorld().getCar4().getX3() - game.getWorld().getCar4().getX1()) / 3)
+							+ game.getWorld().getCar4().getX1() + I),
+					(((game.getWorld().getCar4().getY2() - game.getWorld().getCar4().getY1()) / 2)
+							+ game.getWorld().getCar4().getY1() + J));
+
+			graphics2d4.drawImage(ImageProvider.getCar4(), (int) game.getWorld().getCar4().getX1() + I,
+					(int) game.getWorld().getCar4().getY1() + J, null);
+
+		}
+		
+		//stampo la macchina del giocatore
 		Graphics2D graphics2d = (Graphics2D) g.create();
 
 		graphics2d.rotate(game.getWorld().getCar().getAngle(),
@@ -655,40 +612,6 @@ public class GamePanel extends JPanel {
 
 		graphics2d.drawImage(ImageProvider.getCar(), (int) game.getWorld().getCar().getX1() + I,
 				(int) game.getWorld().getCar().getY1() + J, null);
-
-		Graphics2D graphics2d2 = (Graphics2D) g.create();
-
-		graphics2d2.rotate(game.getWorld().getCar2().getAngle(),
-				(((game.getWorld().getCar2().getX3() - game.getWorld().getCar2().getX1()) / 3)
-						+ game.getWorld().getCar2().getX1() + I),
-				(((game.getWorld().getCar2().getY2() - game.getWorld().getCar2().getY1()) / 2)
-						+ game.getWorld().getCar2().getY1() + J));
-
-		graphics2d2.drawImage(ImageProvider.getCar2(), (int) game.getWorld().getCar2().getX1() + I,
-				(int) game.getWorld().getCar2().getY1() + J, null);
-
-		Graphics2D graphics2d3 = (Graphics2D) g.create();
-
-		graphics2d3.rotate(game.getWorld().getCar3().getAngle(),
-				(((game.getWorld().getCar3().getX3() - game.getWorld().getCar3().getX1()) / 3)
-						+ game.getWorld().getCar3().getX1() + I),
-				(((game.getWorld().getCar3().getY2() - game.getWorld().getCar3().getY1()) / 2)
-						+ game.getWorld().getCar3().getY1() + J));
-
-		graphics2d3.drawImage(ImageProvider.getCar3(), (int) game.getWorld().getCar3().getX1() + I,
-				(int) game.getWorld().getCar3().getY1() + J, null);
-
-		Graphics2D graphics2d4 = (Graphics2D) g.create();
-
-		graphics2d4.rotate(game.getWorld().getCar4().getAngle(),
-				(((game.getWorld().getCar4().getX3() - game.getWorld().getCar4().getX1()) / 3)
-						+ game.getWorld().getCar4().getX1() + I),
-				(((game.getWorld().getCar4().getY2() - game.getWorld().getCar4().getY1()) / 2)
-						+ game.getWorld().getCar4().getY1() + J));
-
-		graphics2d4.drawImage(ImageProvider.getCar4(), (int) game.getWorld().getCar4().getX1() + I,
-				(int) game.getWorld().getCar4().getY1() + J, null);
-
 	}
 
 	private void paintCountDown(Graphics2D g) {
@@ -745,7 +668,7 @@ public class GamePanel extends JPanel {
 
 		game = new GameManager();
 		time();
-		load(path);
+		recordTrack=LevelLoadSave.load(path,nameTrack,game);
 		game.getWorld().makeWorld();
 		game.init();
 		// game.getWorld().getCheckpoints().setFalseAllCheckPoint();
@@ -819,8 +742,8 @@ public class GamePanel extends JPanel {
 				pause = true;
 				focus = false;
 				boolean gameFinish = false;// variabile necessaria per fermare
-											// la chiamata ripetuta nel thread
-											// di saveRecord
+				// la chiamata ripetuta nel thread
+				// di saveRecord
 				startCalendar = new GregorianCalendar();
 				actualCalendar = new GregorianCalendar();
 				actualCalendar.setTimeInMillis(0);
@@ -883,7 +806,7 @@ public class GamePanel extends JPanel {
 						diff = tmp.getTimeInMillis() - actualCalendar.getTimeInMillis();
 					}
 					if (game.endGame() && !gameFinish) {
-						saveRecord(actualCalendar.getTimeInMillis());
+						recordTrack=LevelLoadSave.saveRecord(actualCalendar.getTimeInMillis(),nameTrack);
 
 						game.getWorld().getCar().setUP(false);
 						game.getWorld().getCar().setDOWN(false);
@@ -943,9 +866,10 @@ public class GamePanel extends JPanel {
 		// paintWorld(g); //debug
 		// paintDebugCar(g); // debug
 
-		paintPanelGame(g);
+
 
 		paintCar(g);
+		paintPanelGame(g);
 		paintCountDown(g);
 	}
 }

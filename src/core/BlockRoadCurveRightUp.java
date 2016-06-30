@@ -47,6 +47,16 @@ public class BlockRoadCurveRightUp extends AbstractBlockRoadObject {
 
 			}
 		}
+		int mediumPoint = (firstEdge + secondEdge) / 2;
+		targetPoint[0][0] = mediumPoint;
+		targetPoint[0][1] = SIZE - 1;
+		targetPoint[1][0] = mediumPoint;
+		targetPoint[1][1] = mediumPoint;
+		targetPoint[2][0] = SIZE - SIZE;
+		targetPoint[2][1] =  mediumPoint;
+//		matrix[SIZE - SIZE][mediumPoint] = FOLLOWCAR;
+//		matrix[mediumPoint][mediumPoint] = FOLLOWCAR;
+//		matrix[mediumPoint][SIZE-1] = FOLLOWCAR;
 	}
 
 }

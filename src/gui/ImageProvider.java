@@ -11,6 +11,10 @@ import core.AbstractBlockRoadObject;
 import editor.EditorPanel;
 
 public class ImageProvider {
+	
+	private static Image selectedCheckBox;
+	
+	private static Image deselectedCheckBox;
 
 	private static Image play1;
 
@@ -240,6 +244,10 @@ public class ImageProvider {
 
 	static {
 		try {
+			
+			selectedCheckBox=ImageIO.read(Thread.currentThread().getContextClassLoader().getResource("img/selectedCheckBox.png"));;
+			
+			deselectedCheckBox=ImageIO.read(Thread.currentThread().getContextClassLoader().getResource("img/deselectedCheckBox.png"));;
 
 			play1 = ImageIO.read(Thread.currentThread().getContextClassLoader().getResource("img/play99.png"));
 
@@ -544,6 +552,15 @@ public class ImageProvider {
 
 			e.printStackTrace();
 		}
+	}
+	
+
+	public static Image getSelectedCheckBox() {
+		return selectedCheckBox;
+	}
+
+	public static Image getDeselectedCheckBox() {
+		return deselectedCheckBox;
 	}
 
 	public static Image getClear() {

@@ -34,7 +34,6 @@ public class JDialogOptions extends JDialog {
 		super(menuFrame);
 		this.setUndecorated(true);
 		this.setBackground(new Color(255, 255, 255, 0));
-		
 		buttonResume=new JButton(new ImageIcon(ImageProvider.getResume()));
 		buttonRestart=new JButton(new ImageIcon(ImageProvider.getRestart()));
 		buttonMenuTrack=new JButton(new ImageIcon(ImageProvider.getTracks()));
@@ -123,6 +122,21 @@ public class JDialogOptions extends JDialog {
 			}
 		});
 		
+		buttonSound.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(SoundProvider.getMusic().isPaused()){
+					SoundProvider.getMusic().play();
+					menuFrame.getMenuPanel().setSound(true);
+				}
+				else {
+					SoundProvider.getMusic().pause();
+					menuFrame.getMenuPanel().setSound(false);
+				}
+			}
+		});
+		
 		buttonEsc.addActionListener(new ActionListener() {
 			
 			@Override
@@ -171,6 +185,7 @@ public class JDialogOptions extends JDialog {
 		this.setLocationRelativeTo(menuFrame);
 		this.setModal(true);
 		this.add(jpanelDialog);
+		
 	}
 	
 }

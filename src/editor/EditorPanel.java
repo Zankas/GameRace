@@ -29,6 +29,7 @@ public class EditorPanel extends JPanel{
 	private int bordY=0;
 	private int bordX=0;
 	private int totalLaps;
+	private int totalEnemies;
 	private int dimensionBlock=0;
 	private final Dimension dim;
 	private CenterPanel centerpanel;
@@ -45,6 +46,7 @@ public class EditorPanel extends JPanel{
 		bordX=5;
 		bordY=(resizeY(768)-(dimensionBlock*World.X_MATRIX_STRING))/2;
 		totalLaps=3;
+		totalEnemies=0;
 		supportPanel=new SupportPanel(this,frame);
 		centerpanel=new CenterPanel(frame,supportPanel.getLeftpanel(),this);
 		trasparentPanel=new TrasparentPanel(centerpanel.getWorld(), supportPanel.getLeftpanel(),this,frame);
@@ -75,6 +77,14 @@ public class EditorPanel extends JPanel{
 
 	public void setTotalLaps(int totalLaps) {
 		this.totalLaps = totalLaps;
+	}
+	
+	public int getTotalEnemies() {
+		return totalEnemies;
+	}
+
+	public void setTotalEnemies(int totalEnemies) {
+		this.totalEnemies = totalEnemies;
 	}
 
 	public int getBordY() {

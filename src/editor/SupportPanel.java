@@ -5,6 +5,8 @@ import gui.MenuFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,10 +21,15 @@ public class SupportPanel extends JPanel {
 	private OptionsPanel optionsPanel;
 	
 	private JPanel panelLaps;
+	private JPanel panelEnemies;
 	private JLabel labelLaps;
+	private JLabel labelEnemies;
 	private JButton buttonLapsMore;
 	private JButton buttonLapsLess;
+	private JButton buttonEnemiesMore;
+	private JButton buttonEnemiesLess;
 	private JTextArea textAreaLaps;
+	private JTextArea textAreaEnemies;
 
 	public SupportPanel(EditorPanel editorPanel,MenuFrame frame) {
 		
@@ -36,10 +43,21 @@ public class SupportPanel extends JPanel {
 		this.add(optionsPanel,BorderLayout.EAST);
 		
 		panelLaps=new JPanel();
+		panelEnemies=new JPanel();
 		labelLaps=new JLabel("Laps ");
+		labelEnemies=new JLabel("Enemies");
 		buttonLapsMore=new JButton("+");
 		buttonLapsLess=new JButton("-");
+		buttonEnemiesMore=new JButton("+");
+		buttonEnemiesLess=new JButton("-");
+		
+		buttonLapsMore.setToolTipText("Increase the number of laps");
+		buttonLapsLess.setToolTipText("Decrease the number of laps");
+		buttonEnemiesMore.setToolTipText("Increase the number of enemies");
+		buttonEnemiesLess.setToolTipText("Decrease the number of enemies");
+		
 		textAreaLaps=new JTextArea(Integer.toString (editorPanel.getTotalLaps()));
+		textAreaEnemies=new JTextArea("0");
 		
 		Font font=new Font("ARIAL", 10, 25);
 		
@@ -60,7 +78,37 @@ public class SupportPanel extends JPanel {
 		panelLaps.add(textAreaLaps);
 		panelLaps.add(buttonLapsMore);
 		
-		this.add(panelLaps,BorderLayout.NORTH);
+		panelEnemies.setBackground(Color.ORANGE.brighter());
+		labelEnemies.setFont(font);
+		buttonEnemiesLess.setFont(font);
+		buttonEnemiesLess.setFocusPainted(false);
+		buttonEnemiesLess.setBackground(Color.GRAY.brighter());
+		buttonEnemiesMore.setFont(font);
+		buttonEnemiesMore.setFocusPainted(false);
+		buttonEnemiesMore.setBackground(Color.GRAY.brighter());
+		textAreaEnemies.setFont(font);
+		textAreaEnemies.setOpaque(false);
+		textAreaEnemies.setFocusable(false);
+		
+		panelEnemies.add(labelEnemies);
+		panelEnemies.add(buttonEnemiesLess);
+		panelEnemies.add(textAreaEnemies);
+		panelEnemies.add(buttonEnemiesMore);
+		
+		JPanel panelLapsEnemies=new JPanel();
+		panelLapsEnemies.setBackground(Color.ORANGE.brighter());
+		panelLapsEnemies.setLayout(new GridBagLayout());
+		
+		GridBagConstraints constraints=new GridBagConstraints();
+		constraints.gridx=0;
+		constraints.gridy=0;
+		
+		panelLapsEnemies.add(panelLaps,constraints);
+		constraints.gridy++;
+		panelLapsEnemies.add(panelEnemies,constraints);
+		
+		this.add(panelLapsEnemies,BorderLayout.NORTH);
+		
 		
 		buttonLapsLess.addActionListener(new ActionListener() {
 			
@@ -79,6 +127,27 @@ public class SupportPanel extends JPanel {
 				if(editorPanel.getTotalLaps()<10){
 					editorPanel.setTotalLaps(editorPanel.getTotalLaps()+1);
 					textAreaLaps.setText(Integer.toString(editorPanel.getTotalLaps()));
+				}
+			}
+		});
+		
+		buttonEnemiesLess.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(editorPanel.getTotalEnemies()>0){
+					editorPanel.setTotalEnemies(editorPanel.getTotalEnemies()-1);
+					textAreaEnemies.setText(Integer.toString(editorPanel.getTotalEnemies()));
+				}
+			}
+		});
+		buttonEnemiesMore.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(editorPanel.getTotalEnemies()<3){
+					editorPanel.setTotalEnemies(editorPanel.getTotalEnemies()+1);
+					textAreaEnemies.setText(Integer.toString(editorPanel.getTotalEnemies()));
 				}
 			}
 		});
