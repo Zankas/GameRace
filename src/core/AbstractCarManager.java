@@ -66,11 +66,25 @@ public abstract class AbstractCarManager implements CarManager {
 		setDirection();
 		for (int j = i + 1; j < carManagerList.size(); j++) {
 			if (collisionDetection(carManagerList.get(j).getCar())) {
+<<<<<<< HEAD
 				applyCollision(carManagerList.get(j).getCar(), aheadCar(carManagerList.get(j)));
+=======
+				// System.out.println(
+				// "car: " + car.getID() + " collide with car :" +
+				// carManagerList.get(j).getCar().getID());
+				// final int behaviour = aheadCar(carManagerList.get(j));
+				// System.out.println(behaviour);
+				// responseCollision(this.car, behaviour);
+				// responseCollision(carManagerList.get(j).getCar(), behaviour +
+				// 1);
+
+				applyCollision(carManagerList.get(j).getCar());
+>>>>>>> origin/master
 			}
 		}
 	}
 
+<<<<<<< HEAD
 	private void applyCollision(Car car2, int aheadCar) {
 		switch (aheadCar) {
 		// 0, 1, 2 ARE COMMON FOR ALL.
@@ -86,6 +100,35 @@ public abstract class AbstractCarManager implements CarManager {
 			} else {
 				car.setSpeed(car.getSpeed() + collisionSpeed);
 				car2.setSpeed(car2.getSpeed() + collisionSpeed);
+=======
+	private void applyCollision(Car car2) {
+		if (inRange(car2.getAngle()) == 0) {
+
+		}
+	}
+
+	private int inRange(double angle) {
+		// SAME RANGE OF ANGLE == 1 , OPPOSITE RANGE == 0 , NEXT UP = 1, NEXT
+		// DOWN = 2.
+
+		return -1;
+	}
+
+	private int aheadCar(CarManager carManager) {
+
+		// TODO
+		// DA FARE LA CHECK CON IL RITORNO NEL CASO UNA CAR SFONDI UN'ALTRA CAR.
+
+		if (this.direction == Direction.UP) {
+			if (carManager.getDirection() == Direction.DOWN)
+				return 4;
+			else if (carManager.getDirection() == Direction.UP) {
+				if (findCenter(this.getCar().getY1rot(), this.getCar().getY4rot()) < findCenter(
+						carManager.getCar().getY1rot(), carManager.getCar().getY4rot())) {
+					return 0;
+				} else
+					return 2;
+>>>>>>> origin/master
 			}
 			break;
 		case 1: // SAME DIRECTION, TAMPONATO.
@@ -345,6 +388,7 @@ public abstract class AbstractCarManager implements CarManager {
 		return 4;
 	}
 
+<<<<<<< HEAD
 	final private int aheadDown(final CarManager carManager) {
 		if (carManager.getDirection() == Direction.UP)
 			return 0;
@@ -387,6 +431,20 @@ public abstract class AbstractCarManager implements CarManager {
 				return 11;
 			else if (carManager.getCar().getX4rot() <= Math.min(car.getX1rot(), car.getX2rot())) {
 				return 12;
+=======
+	void responseCollision(Car car, int behaviour) {
+		// FIXME
+
+		if (behaviour == 0 || behaviour == 3) { // CAR STA ANDANDO AVANTI E
+												// VIENE COLPITA DA DIETRO.
+			// gestione velocita' per marcia avanti
+			if (car.isUP()) {
+				car.setSpeed(car.getSpeed() + 0.01);
+			} else if (car.isDOWN()) {
+				car.setSpeed(-car.getSpeed() + 0.01);
+			} else {
+				car.setSpeed(car.getSpeed() + 0.03);
+>>>>>>> origin/master
 			}
 			return 13;
 		}
@@ -398,6 +456,7 @@ public abstract class AbstractCarManager implements CarManager {
 		return 14;
 	}
 
+<<<<<<< HEAD
 	final private int aheadLeft(final CarManager carManager) {
 		if (carManager.getDirection() == Direction.RIGHT)
 			return 0;
@@ -427,6 +486,26 @@ public abstract class AbstractCarManager implements CarManager {
 
 	private void moving() {
 		car.moveXYrot(world);
+=======
+		} else if (behaviour == 1 || behaviour == 2) {
+			// CAR
+			// STA
+			// ANDANDO
+			// AVANTI
+			// E COLPISCE DAVANTI.
+			if (car.isUP() || car.isDOWN()) {
+				car.setSpeed(-car.getSpeed());
+			} else {
+				car.setSpeed(car.getSpeed() + 0.04);
+			}
+		} else if (behaviour == 4 || behaviour == 5) {
+			// CAR FANNO FACE TO FACE.
+			if (car.isUP() || car.isDOWN()) {
+				car.setSpeed(-car.getSpeed());
+			} else {
+				car.setSpeed(car.getSpeed() - 0.04);
+			}
+>>>>>>> origin/master
 
 		if (car.isLEFT()) {
 			if (car.getSpeed() != 0) {

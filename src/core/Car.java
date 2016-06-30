@@ -61,6 +61,20 @@ public class Car {
 
 		lock.unlock();
 	}
+<<<<<<< HEAD
+=======
+	//
+	// public Car(Car car, int value) {
+	// if (value == 1) {
+	// setX((int) car.getX1() + (int) (car.getX1() - car.getX3() / 2));
+	// setY((int) car.getY1() + (int) (car.getY2() - car.getY1() / 2));
+	// setXYrotate();
+	// setAngle(0);
+	// this.ID = car.ID + 1;
+	// }
+	//
+	// }
+>>>>>>> origin/master
 
 	public double getSpeed() {
 		try {
